@@ -1,6 +1,5 @@
 package com.jaysquared.openflights.webservice;
 
-
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 
@@ -19,9 +18,9 @@ public class OpenFlightsWebservice {
 
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception
+	public static void main(final String[] args) throws Exception
 	{
 		final Settings settings = CmdLineParser.parseArguments(args);
 

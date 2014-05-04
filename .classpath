@@ -12,6 +12,7 @@
 			<attribute name="javadoc_location" value="http://restlet.org/learn/javadocs/2.1/jse/api/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/MKCommons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MKCommons-Java"/>
+	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.30-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

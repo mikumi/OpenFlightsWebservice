@@ -1,8 +1,8 @@
 package com.jaysquared.openflights.webservice;
+
 /**
  * 
  */
-
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -27,13 +27,13 @@ public class CmdLineParser {
 	private static final String PARAM_SQLUSER = "sqluser";
 	private static final String PARAM_SQLDB = "sqldb";
 
-	private static final String ENV_VAR_PASSWORD = "BOARDINGPASS_SQL_PW";
+	private static final String ENV_VAR_PASSWORD = "OPENFLIGHTS_SQL_PW";
 
 	public static Settings parseArguments(final String[] args)
 	{
 		final Options options = new Options();
-		options.addOption(PARAM_HTTP, true, "HTTP port for Boarding Pass web service");
-		options.addOption(PARAM_HTTPS, true, "HTTPS port for Boarding Pass web service");
+		options.addOption(PARAM_HTTP, true, "HTTP port for web service");
+		options.addOption(PARAM_HTTPS, true, "HTTPS port for web service");
 		options.addOption(PARAM_LOG, true, "Log level");
 		options.addOption(PARAM_SQL, false, "SQL database");
 		options.addOption(PARAM_SQLHOST, true, "SQL host");
