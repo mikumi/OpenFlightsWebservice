@@ -18,6 +18,16 @@ public class Airline {
 	final private String country;
 	final private boolean active;
 
+	/**
+	 * @param airlineId
+	 * @param name
+	 * @param alias
+	 * @param iata
+	 * @param icao
+	 * @param callsign
+	 * @param country
+	 * @param active
+	 */
 	public Airline(final int airlineId, final String name, final String alias, final String iata, final String icao,
 			final String callsign, final String country, final boolean active)
 	{
@@ -31,6 +41,9 @@ public class Airline {
 		this.active = active;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString()
 	{

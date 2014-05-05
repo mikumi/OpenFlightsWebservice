@@ -52,9 +52,12 @@ public class AirlineDatabaseTest {
 	public final void testAirlineByIata()
 	{	
 		AirlineDatabase airlineDatabase = new AirlineDatabase(connectionManager);
-		Airline airline = airlineDatabase.airlineByIata("LH");
-		assertTrue("IATA code didn't match.", airline.getIata().equals("LH"));
-		Log.debug("Airline: " + airline.toString());
+		Airline[] airlines = airlineDatabase.airlineByField(AirlineDatabase.FIELD_IATA, "LH");
+		Log.verbose("Airlines found: " + airlines.length);
+		for (Airline airline : airlines) {
+			assertTrue("IATA code didn't match.", airline.getIata().equals("LH"));
+			Log.debug("Airline: " + airline.toString());
+		}
 	}
 
 }
