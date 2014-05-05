@@ -3,10 +3,161 @@
  */
 package com.jaysquared.openflights.webservice.data;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.jaysquared.openflights.webservice.dbconnection.MySqlConnectionManager;
+import com.jaysquared.openflights.webservice.dbconnection.MySqlSelectStatementBuilder;
+import com.michael_kuck.commons.Log;
+
 /**
  * @author michaelkuck
  * 
  */
 public class AirportDatabase {
 
+	final public static String TABLE_AIRPORTS = "of_airports";
+
+	final public static String FIELD_AIRPORT_ID = "airport_id";
+	final public static String FIELD_NAME = "name";
+	final public static String FIELD_CITY = "city";
+	final public static String FIELD_COUNTRY = "country";
+	final public static String FIELD_IATA_FAA = "iata_faa";
+	final public static String FIELD_ICAO = "icao";
+	final public static String FIELD_LATITUDE = "latitude";
+	final public static String FIELD_LONGITUDE = "longitude";
+	final public static String FIELD_ALTITUDE = "altitude";
+	final public static String FIELD_TIMEZONE = "timezone";
+	final public static String FIELD_DST = "dst";
+
+	final private MySqlConnectionManager connectionManager;
+
+	/**
+	 * 
+	 */
+	public AirportDatabase(final MySqlConnectionManager connectionManager)
+	{
+		this.connectionManager = connectionManager;
+	}
+
+	public int[] airportIdsByField(String field, String value)
+	{
+		HashMap<String, String> fields = new HashMap<String, String>();
+		fields.put(field, value);
+		return airportIdsByFields(fields);
+	}
+
+	/**
+	 * @param fields
+	 * @return
+	 */
+	public int[] airportIdsByFields(Map<String, String> fields)
+	{
+		Log.verbose("airportIdsByField: " + fields.toString());
+
+		ArrayList<Integer> airportIds = new ArrayList<Integer>();
+		final Connection connection = this.connectionManager.connectionFromPool();
+		if (connection == null) {
+			Log.error("Could not search for airports, no database connection.");
+		} else {
+			try {
+				// Prepare statement
+				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRPORTS);
+				statementBuilder.addSelectField(FIELD_AIRPORT_ID);
+				Log.verbose(statementBuilder.getStatement());
+				for (Map.Entry<String, String> entry : fields.entrySet()) {
+					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+				}
+				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				Log.verbose("Executing SQL statement: " + statement.toString());
+
+				// Execute statement and parse results
+				final ResultSet resultSet = statement.executeQuery();
+				while (resultSet.next()) {
+					final int resultAirportId = resultSet.getInt(FIELD_AIRPORT_ID);
+					airportIds.add(resultAirportId);
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		this.connectionManager.returnToPool(connection);
+
+		int ids[] = new int[airportIds.size()];
+		for (int i = 0; i < airportIds.size(); i++) {
+			ids[i] = airportIds.get(i).intValue();
+		}
+		return ids;
+	}
+
+	/**
+	 * @param field
+	 * @param value
+	 */
+	public Airport[] airportsByField(String field, String value)
+	{
+		HashMap<String, String> fields = new HashMap<String, String>();
+		fields.put(field, value);
+		return airportsByFields(fields);
+	}
+
+	/**
+	 * @param fields
+	 * @return
+	 */
+	public Airport[] airportsByFields(Map<String, String> fields)
+	{
+		Log.verbose("airportsByField: " + fields.toString());
+
+		ArrayList<Airport> airports = new ArrayList<Airport>();
+		final Connection connection = this.connectionManager.connectionFromPool();
+		if (connection == null) {
+			Log.error("Could not search for airports, no database connection.");
+		} else {
+			try {
+				// Prepare statement
+				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRPORTS);
+				statementBuilder.addSelectFields(new String[] { FIELD_AIRPORT_ID, FIELD_NAME, FIELD_CITY,
+						FIELD_COUNTRY, FIELD_IATA_FAA, FIELD_ICAO, FIELD_LATITUDE, FIELD_LONGITUDE, FIELD_ALTITUDE,
+						FIELD_TIMEZONE, FIELD_DST });
+				Log.verbose(statementBuilder.getStatement());
+				for (Map.Entry<String, String> entry : fields.entrySet()) {
+					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+				}
+				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				Log.verbose("Executing SQL statement: " + statement.toString());
+
+				// Execute statement and parse results
+				final ResultSet resultSet = statement.executeQuery();
+				while (resultSet.next()) {
+					final int resultAirportId = resultSet.getInt(FIELD_AIRPORT_ID);
+					final String resultName = resultSet.getString(FIELD_NAME);
+					final String resultCity = resultSet.getString(FIELD_CITY);
+					final String resultCountry = resultSet.getString(FIELD_COUNTRY);
+					final String resultIataFaa = resultSet.getString(FIELD_IATA_FAA);
+					final String resultIcao = resultSet.getString(FIELD_ICAO);
+					final float resultLatitude = resultSet.getFloat(FIELD_LATITUDE);
+					final float resultLongitude = resultSet.getFloat(FIELD_LONGITUDE);
+					final int resultAltitude = resultSet.getInt(FIELD_ALTITUDE);
+					final float resultTimezone = resultSet.getFloat(FIELD_TIMEZONE);
+					final String resultDst = resultSet.getString(FIELD_DST);
+					Airport airport = new Airport(resultAirportId, resultName, resultCity, resultCountry,
+							resultIataFaa, resultIcao, resultLatitude, resultLongitude, resultAltitude, resultTimezone,
+							resultDst.charAt(0));
+					airports.add(airport);
+				}
+			} catch (final SQLException e) {
+				Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
+			}
+		}
+
+		this.connectionManager.returnToPool(connection);
+		return airports.toArray(new Airport[airports.size()]);
+	}
+	
 }

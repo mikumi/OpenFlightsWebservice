@@ -21,7 +21,6 @@ public class CmdLineParser {
 	private static final String PARAM_HTTP = "http";
 	private static final String PARAM_HTTPS = "https";
 	private static final String PARAM_LOG = "log";
-	private static final String PARAM_SQL = "sql";
 	private static final String PARAM_SQLHOST = "sqlhost";
 	private static final String PARAM_SQLPORT = "sqlport";
 	private static final String PARAM_SQLUSER = "sqluser";
@@ -35,7 +34,6 @@ public class CmdLineParser {
 		options.addOption(PARAM_HTTP, true, "HTTP port for web service");
 		options.addOption(PARAM_HTTPS, true, "HTTPS port for web service");
 		options.addOption(PARAM_LOG, true, "Log level");
-		options.addOption(PARAM_SQL, false, "SQL database");
 		options.addOption(PARAM_SQLHOST, true, "SQL host");
 		options.addOption(PARAM_SQLPORT, true, "SQL port");
 		options.addOption(PARAM_SQLUSER, true, "SQL user");
@@ -54,18 +52,15 @@ public class CmdLineParser {
 			if (cmdLine.hasOption(PARAM_LOG)) {
 				Log.setLogLevel(Log.Level.valueOf(cmdLine.getOptionValue(PARAM_LOG)));
 			}
-			if (cmdLine.hasOption(PARAM_SQL)) {
-
-				// Check if password is set in environment variable. We dont want to set this using
-				// a parameter (because of bash history, "ps" command etc)
-				final String sqlPassword = System.getenv(ENV_VAR_PASSWORD);
-				if (sqlPassword != null) {
-					// System.out.println(sqlPassword);
-					settings.setSqlPassword(sqlPassword);
-				} else {
-					Log.warning("SQL has been set to use, but no password is provided.");
-					Log.warning("use 'export " + ENV_VAR_PASSWORD + "=password' first.");
-				}
+			// Check if password is set in environment variable. We dont want to set this using
+			// a parameter (because of bash history, "ps" command etc)
+			final String sqlPassword = System.getenv(ENV_VAR_PASSWORD);
+			if (sqlPassword != null) {
+				// System.out.println(sqlPassword);
+				settings.setSqlPassword(sqlPassword);
+			} else {
+				Log.warning("No MySQL password has been provided.");
+				Log.warning("use 'export " + ENV_VAR_PASSWORD + "=password' first.");
 			}
 			if (cmdLine.hasOption(PARAM_SQLHOST)) {
 				settings.setSqlHost(cmdLine.getOptionValue(PARAM_SQLHOST));

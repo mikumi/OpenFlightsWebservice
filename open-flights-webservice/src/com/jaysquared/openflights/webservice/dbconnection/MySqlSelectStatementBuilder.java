@@ -104,7 +104,7 @@ public class MySqlSelectStatementBuilder {
 				statementStringBuilder.append("=");
 				statementStringBuilder.append(entry.getValue());
 				if (it.hasNext()) {
-					statementStringBuilder.append(",");
+					statementStringBuilder.append(" AND ");
 				}
 
 			}

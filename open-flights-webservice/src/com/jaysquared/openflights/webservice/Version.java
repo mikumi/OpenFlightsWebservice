@@ -11,7 +11,7 @@ package com.jaysquared.openflights.webservice;
 public class Version {
 
 	final public static int MAJOR = 0;
-	final public static int MINOR = 2;
+	final public static int MINOR = 3;
 	final public static int PATCH = 0;
 
 	/**

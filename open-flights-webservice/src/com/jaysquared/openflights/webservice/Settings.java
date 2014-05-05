@@ -11,18 +11,26 @@ package com.jaysquared.openflights.webservice;
 public class Settings {
 
 	// General Settings
-	private int werbservicePortHTTP = 8891;
-	private int webservicePortHTTPS = 8892;
+	private int werbservicePortHTTP;
+	private int webservicePortHTTPS;
 
 	// SQL connection settings
-	private String sqlHost = "localhost";
-	private int sqlPort = 3306;
-	private String sqlUser = "root";
-	private String sqlPassword = "";
-	private String sqlDatabase = "open_flights";
+	private String sqlHost;
+	private int sqlPort;
+	private String sqlUser;
+	private String sqlPassword;
+	private String sqlDatabase;
 
 	public Settings()
 	{
+		werbservicePortHTTP = 8891;
+		webservicePortHTTPS = 8892;
+		
+		sqlHost = "localhost";
+		sqlPort = 3306;
+		sqlUser = "root";
+		sqlPassword = "";
+		sqlDatabase = "open_flights";
 	}
 
 	/**

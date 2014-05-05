@@ -96,7 +96,7 @@ public class MySqlSelectStatementBuilderTest {
 		assertTrue(
 				"Not a correct statement",
 				statement
-						.equals("SELECT * FROM test_table WHERE field5=?,field4=?,field3='value3',field2=?,field1='value1'"));
+						.equals("SELECT * FROM test_table WHERE field5=? AND field4=? AND field3='value3' AND field2=? AND field1='value1'"));
 	}
 
 	@Test
