@@ -15,7 +15,6 @@ import com.jaysquared.openflights.webservice.ApplicationContext;
 import com.jaysquared.openflights.webservice.dbconnection.MySqlConnectionManager;
 import com.jaysquared.openflights.webservice.dbconnection.MySqlSelectStatementBuilder;
 import com.michael_kuck.commons.Log;
-import com.mysql.jdbc.Field;
 
 /**
  * @author michaelkuck
