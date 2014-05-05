@@ -1,21 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project open-flights-webservice with libraries in sub-folder">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
-    <target name="create_run_jar">
-        <delete dir="release"/>
-        <jar destfile="release/open-flights-webservice.jar">
-            <manifest>
-                <attribute name="Main-Class" value="com.jaysquared.openflights.webservice.OpenFlightsWebservice"/>
-                <attribute name="Class-Path" value=". lib/commons-cli-1.2.jar lib/org.restlet.jar lib/mysql-connector-java-5.1.30-bin.jar lib/gson-2.2.4.jar"/>
-            </manifest>
-            <fileset dir="bin"/>
-            <fileset dir="../mkcommons-java/bin"/>
-        </jar>
-        <mkdir dir="release/lib"/>
-        <copy file="lib/commons-cli-1.2.jar" todir="release/lib"/>
-        <copy file="lib/org.restlet.jar" todir="release/lib"/>
-        <copy file="lib/mysql-connector-java-5.1.30-bin.jar" todir="release/lib"/>
-        <copy file="lib/gson-2.2.4.jar" todir="release/lib"/>
+
+<project default="jar" name="open-flights-webservice">
+    <description>
+    Create runnable jar file for Open Flights Web Service.
+    </description>
+
+    <!-- set directory names -->
+    <property name="lib.dir" value="lib"/>
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="bin"/>
+    <property name="mkcommons.src.dir" value="../mkcommons-java/src"/>
+
+    <!-- set name of the main class -->
+    <property name="main-class" value="com.jaysquared.openflights.webservice.OpenFlightsWebservice"/>
+
+    <!-- set name of resulting jar file -->
+    <property name="jar.file" value="${ant.project.name}.jar"/>
+
+    <!-- set the classpath for javac -->
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <!-- create the "Class-Path" attribute of MANIFEST.MF -->
+    <pathconvert property="mf.classpath" pathsep=" ">
+        <path refid="classpath"/>
+        <!-- the following converts absolute to relative paths -->
+        <mapper>
+            <chainedmapper>
+                <flattenmapper/>
+                <globmapper from="*.jar" to="${lib.dir}/*.jar"/>
+            </chainedmapper>
+        </mapper>
+    </pathconvert>
+
+
+    <!-- targets -->
+
+    <target name="clean" description="Remove output.">
+        <delete dir="${build.dir}"/>
+        <delete file="${jar.file}"/>
     </target>
+
+    <target name="compile" description="Compile java files.">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${build.dir}"
+               includeantruntime="false"
+               classpathref="classpath"/>
+        <javac srcdir="${mkcommons.src.dir}"
+               destdir="${build.dir}"
+               includeantruntime="false"
+               classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile" description="Create jar file.">
+        <jar destfile="${jar.file}">
+            <fileset dir="${build.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="Class-Path" value="${mf.classpath}"/>
+            </manifest>
+        </jar>
+    </target>
+
 </project>
