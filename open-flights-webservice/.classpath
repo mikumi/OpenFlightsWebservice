@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/MKCommons-Java"/>
 	<classpathentry kind="lib" path="/Users/michaelkuck/Documents/Development/Jaysquared/open-flights-webservice/open-flights-webservice/lib/commons-cli-1.2.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://commons.apache.org/proper/commons-cli/apidocs"/>
@@ -12,7 +13,6 @@
 			<attribute name="javadoc_location" value="http://restlet.org/learn/javadocs/2.1/jse/api/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/MKCommons-Java"/>
 	<classpathentry kind="lib" path="/Users/michaelkuck/Documents/Development/Jaysquared/open-flights-webservice/open-flights-webservice/lib/mysql-connector-java-5.1.30-bin.jar"/>
 	<classpathentry kind="lib" path="/Users/michaelkuck/Documents/Development/Jaysquared/open-flights-webservice/open-flights-webservice/lib/gson-2.2.4.jar">
 		<attributes>

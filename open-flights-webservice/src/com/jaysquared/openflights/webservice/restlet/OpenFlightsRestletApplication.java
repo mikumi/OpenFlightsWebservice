@@ -19,12 +19,19 @@ public class OpenFlightsRestletApplication extends Application {
 	{
 		// Create a new restlet router and attach all restlet resources
 		final Router router = new Router(this.getContext());
+		// Airlines
 		for (String url : AirlinesRessource.URLS) {
 			router.attach(url, AirlinesRessource.class);
 		}
-		router.attach("/airports/ids", AirportIdsRessource.class);
-		router.attach("/airports/list", AirportListRessource.class);
-		router.attach("/routes/list", RouteListRessource.class);
+		// Airports
+		for (String url : AirportsRessource.URLS) {
+			router.attach(url, AirportsRessource.class);
+		}
+		// Routes
+		for (String url : RoutesRessource.URLS) {
+			router.attach(url, RoutesRessource.class);
+		}
+		// Info
 		router.attach("/info", InfoRessource.class);
 		return router;
 	}

@@ -91,6 +91,62 @@ public class AirlineDatabase {
 		}
 		return ids;
 	}
+	
+	/**
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public Map<String, ArrayList<String>> airlineListByField(String field, String value) {
+		HashMap<String, String> fields = new HashMap<String, String>();
+		fields.put(field, value);
+		return airlineListByFields(fields);
+	}
+	
+	/**
+	 * @param fields
+	 * @return
+	 */
+	public Map<String, ArrayList<String>> airlineListByFields(Map<String,String> fields) {
+		Log.verbose("airlineListByField: " + fields.toString());
+
+		HashMap<String,ArrayList<String>> airlineList = new HashMap<String,ArrayList<String>>();
+		final Connection connection = this.connectionManager.connectionFromPool();
+		if (connection == null) {
+			Log.error("Could not search for airlines, no database connection.");
+		} else {
+			try {
+				// Prepare statement
+				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRLINES);
+				statementBuilder.addSelectField(FIELD_NAME);
+				statementBuilder.addSelectField(FIELD_IATA);
+				Log.verbose(statementBuilder.getStatement());
+				for (Map.Entry<String, String> entry : fields.entrySet()) {
+					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+				}
+				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				Log.verbose("Executing SQL statement: " + statement.toString());
+
+				// Execute statement and parse results
+				final ResultSet resultSet = statement.executeQuery();
+				while (resultSet.next()) {
+					final String resultAirlineName = resultSet.getString(FIELD_NAME);
+					final String resultAirlineIata = resultSet.getString(FIELD_IATA);
+					ArrayList<String> airlines = airlineList.get(resultAirlineIata);
+					if (airlines == null) {
+						airlines = new ArrayList<String>();
+						airlineList.put(resultAirlineIata, airlines);
+					}
+					airlines.add(resultAirlineName);
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		this.connectionManager.returnToPool(connection);
+
+		return airlineList;
+	}
 
 	/**
 	 * @param field

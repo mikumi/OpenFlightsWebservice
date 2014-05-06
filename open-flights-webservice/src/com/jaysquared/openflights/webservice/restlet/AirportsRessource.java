@@ -13,14 +13,16 @@ import com.google.gson.Gson;
 import com.jaysquared.openflights.webservice.ApplicationContext;
 import com.jaysquared.openflights.webservice.data.Airline;
 import com.jaysquared.openflights.webservice.data.AirlineDatabase;
+import com.jaysquared.openflights.webservice.data.Airport;
+import com.jaysquared.openflights.webservice.data.AirportDatabase;
 
 /**
  * @author michaelkuck
  *
  */
-public class AirlinesRessource extends ServerResource {
+public class AirportsRessource extends ServerResource {
 		
-	public static final String URL_ROOT = "/airlines";
+	public static final String URL_ROOT = "/airports";
 	public static final String SUB_RESOURCE_PLACEHOLDER = "sub";
 	public static final String[] URLS = {URL_ROOT, urlForRessource(SUB_RESOURCE_PLACEHOLDER)};
 	
@@ -36,11 +38,11 @@ public class AirlinesRessource extends ServerResource {
 		final String result;
 		final String ressourceSub = (String) getRequest().getAttributes().get(SUB_RESOURCE_PLACEHOLDER);
 		if (ressourceSub == null) {
-			result = getAirlines();
+			result = getAirports();
 		} else if (ressourceSub.equals(RESOURCE_IDS)) {
-			result = getAirlineIds();
+			result = getAirportIds();
 		} else if (ressourceSub.equals(RESOURCE_LIST)) {
-			result = getAirlineList();
+			result = getAirportList();
 		} else {
 			result = "Ressource not found";
 		}
@@ -50,19 +52,19 @@ public class AirlinesRessource extends ServerResource {
 	/**
 	 * @return
 	 */
-	private String getAirlineIds() {
+	private String getAirportIds() {
 		Map<String, String> parameters = getQuery().getValuesMap();
-		AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation().getAirlineDatabase();
-		int[] airlineIds = airlineDatabase.airlineIdsByFields(parameters);
+		AirportDatabase airportDatabase = ApplicationContext.getInstance().getFlightInformation().getAirportDatabase();
+		int[] airportIds = airportDatabase.airportIdsByFields(parameters);
 		
 		StringBuilder result = new StringBuilder(50);
-		for (int airlineId : airlineIds) {
-			result.append(airlineId);
+		for (int airportId : airportIds) {
+			result.append(airportId);
 			result.append(",");
 		}
 		
 		Gson gson = new Gson();
-		String jsonString = gson.toJson(airlineIds);
+		String jsonString = gson.toJson(airportIds);
 		
 		return jsonString;
 	}
@@ -70,13 +72,13 @@ public class AirlinesRessource extends ServerResource {
 	/**
 	 * @return
 	 */
-	private String getAirlines() {
+	private String getAirports() {
 		Map<String, String> parameters = getQuery().getValuesMap();
-		AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation().getAirlineDatabase();
-		Airline[] airlines = airlineDatabase.airlinesByFields(parameters);
+		AirportDatabase airportDatabase = ApplicationContext.getInstance().getFlightInformation().getAirportDatabase();
+		Airport[] airports = airportDatabase.airportsByFields(parameters);
 			
 		Gson gson = new Gson();
-		String jsonString = gson.toJson(airlines);
+		String jsonString = gson.toJson(airports);
 		
 		return jsonString;
 	}
@@ -84,14 +86,14 @@ public class AirlinesRessource extends ServerResource {
 	/**
 	 * @return
 	 */
-	private String getAirlineList()
+	private String getAirportList()
 	{
 		Map<String, String> parameters = getQuery().getValuesMap();
-		AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation().getAirlineDatabase();
-		Map<String,ArrayList<String>> airlineNames = airlineDatabase.airlineListByFields(parameters);
+		AirportDatabase airportDatabase = ApplicationContext.getInstance().getFlightInformation().getAirportDatabase();
+		Map<String,ArrayList<String>> airportNames = airportDatabase.airportListByFields(parameters);
 			
 		Gson gson = new Gson();
-		String jsonString = gson.toJson(airlineNames);
+		String jsonString = gson.toJson(airportNames);
 		
 		return jsonString;
 	}

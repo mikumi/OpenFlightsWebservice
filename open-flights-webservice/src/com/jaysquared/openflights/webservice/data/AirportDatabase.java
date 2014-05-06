@@ -94,6 +94,62 @@ public class AirportDatabase {
 		}
 		return ids;
 	}
+	
+	/**
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public Map<String, ArrayList<String>> airportListByField(String field, String value) {
+		HashMap<String, String> fields = new HashMap<String, String>();
+		fields.put(field, value);
+		return airportListByFields(fields);
+	}
+	
+	/**
+	 * @param fields
+	 * @return
+	 */
+	public Map<String, ArrayList<String>> airportListByFields(Map<String,String> fields) {
+		Log.verbose("airportListByField: " + fields.toString());
+
+		HashMap<String,ArrayList<String>> airportList = new HashMap<String,ArrayList<String>>();
+		final Connection connection = this.connectionManager.connectionFromPool();
+		if (connection == null) {
+			Log.error("Could not search for airports, no database connection.");
+		} else {
+			try {
+				// Prepare statement
+				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRPORTS);
+				statementBuilder.addSelectField(FIELD_NAME);
+				statementBuilder.addSelectField(FIELD_IATA_FAA);
+				Log.verbose(statementBuilder.getStatement());
+				for (Map.Entry<String, String> entry : fields.entrySet()) {
+					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+				}
+				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				Log.verbose("Executing SQL statement: " + statement.toString());
+
+				// Execute statement and parse results
+				final ResultSet resultSet = statement.executeQuery();
+				while (resultSet.next()) {
+					final String resultAirportName = resultSet.getString(FIELD_NAME);
+					final String resultAirportIataFaa = resultSet.getString(FIELD_IATA_FAA);
+					ArrayList<String> airports = airportList.get(resultAirportIataFaa);
+					if (airports == null) {
+						airports = new ArrayList<String>();
+						airportList.put(resultAirportIataFaa, airports);
+					}
+					airports.add(resultAirportName);
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		this.connectionManager.returnToPool(connection);
+
+		return airportList;
+	}
 
 	/**
 	 * @param field
