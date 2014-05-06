@@ -3,6 +3,9 @@
  */
 package com.jaysquared.openflights.webservice.data;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * @author michaelkuck
  * 
@@ -41,7 +44,41 @@ public class Airline {
 		this.active = active;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(17, 31).append(airlineId).append(name).append(alias).append(iata).append(icao)
+				.append(callsign).append(country).append(active).toHashCode();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Airline))
+			return false;
+
+		Airline airline = (Airline) obj;
+		return new EqualsBuilder().append(airlineId, airline.airlineId).append(name, airline.name)
+				.append(alias, airline.alias).append(iata, airline.iata).append(icao, airline.icao)
+				.append(callsign, airline.callsign).append(country, airline.country).append(active, airline.active)
+				.isEquals();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -115,5 +152,5 @@ public class Airline {
 	{
 		return this.airlineId;
 	}
-
+	
 }

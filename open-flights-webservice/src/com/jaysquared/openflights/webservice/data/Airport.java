@@ -3,6 +3,9 @@
  */
 package com.jaysquared.openflights.webservice.data;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * @author michaelkuck
  * 
@@ -36,15 +39,51 @@ public class Airport {
 		this.timezone = timezone;
 		this.dst = dst;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(17, 31).append(airportId).append(name).append(city).append(country).append(iata_faa)
+				.append(icao).append(latitude).append(longitude).append(altitude).append(timezone).append(dst)
+				.toHashCode();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Airline))
+			return false;
+
+		Airport airport = (Airport) obj;
+		return new EqualsBuilder().append(airportId, airport.airportId).append(name, airport.name)
+				.append(city, airport.city).append(country, airport.country).append(iata_faa, airport.iata_faa)
+				.append(icao, airport.icao).append(latitude, airport.latitude).append(longitude, airport.longitude)
+				.append(altitude, airport.altitude).append(timezone, airport.timezone).append(dst, airport.dst)
+				.isEquals();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		final String description = this.name + " (" + this.iata_faa + "/" + this.icao + ") in " + this.country + " (id: "
-				+ this.airportId + ")";
+		final String description = this.name + " (" + this.iata_faa + "/" + this.icao + ") in " + this.country
+				+ " (id: " + this.airportId + ")";
 		return description;
 	}
 

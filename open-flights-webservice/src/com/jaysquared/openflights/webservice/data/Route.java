@@ -1,5 +1,8 @@
 package com.jaysquared.openflights.webservice.data;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Route {
 
 	private final Airline airline;
@@ -19,14 +22,48 @@ public class Route {
 		this.stops = stops;
 		this.equipment = equipment;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(17, 31).append(airline).append(sourceAirport).append(destinationAirport)
+				.append(codeshare).append(stops).append(equipment).toHashCode();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Airline))
+			return false;
+
+		Route route = (Route) obj;
+		return new EqualsBuilder().append(airline, route.airline).append(sourceAirport, route.sourceAirport)
+				.append(destinationAirport, route.destinationAirport).append(codeshare, route.codeshare)
+				.append(stops, route.stops).append(equipment, route.equipment).isEquals();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		final String description = airline.getCallsign() + " from " + sourceAirport.getName() + " to " + destinationAirport.getName();
+		final String description = airline.getCallsign() + " from " + sourceAirport.getName() + " to "
+				+ destinationAirport.getName();
 		return description;
 	}
 
@@ -77,7 +114,5 @@ public class Route {
 	{
 		return equipment;
 	}
-	
-	
 
 }

@@ -35,6 +35,9 @@ public class AirportDatabase {
 	final public static String FIELD_TIMEZONE = "timezone";
 	final public static String FIELD_DST = "dst";
 
+	final public Map<String, ArrayList<Airport>> airportCache;
+	final public Map<Integer, Airport> airportIdCache;
+
 	final private MySqlConnectionManager connectionManager;
 
 	/**
@@ -43,6 +46,8 @@ public class AirportDatabase {
 	public AirportDatabase(final MySqlConnectionManager connectionManager)
 	{
 		this.connectionManager = connectionManager;
+		this.airportCache = new HashMap<String, ArrayList<Airport>>();
+		this.airportIdCache = new HashMap<Integer, Airport>();
 	}
 
 	public int[] airportIdsByField(String field, String value)
@@ -94,26 +99,28 @@ public class AirportDatabase {
 		}
 		return ids;
 	}
-	
+
 	/**
 	 * @param field
 	 * @param value
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> airportListByField(String field, String value) {
+	public Map<String, ArrayList<String>> airportListByField(String field, String value)
+	{
 		HashMap<String, String> fields = new HashMap<String, String>();
 		fields.put(field, value);
 		return airportListByFields(fields);
 	}
-	
+
 	/**
 	 * @param fields
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> airportListByFields(Map<String,String> fields) {
+	public Map<String, ArrayList<String>> airportListByFields(Map<String, String> fields)
+	{
 		Log.verbose("airportListByField: " + fields.toString());
 
-		HashMap<String,ArrayList<String>> airportList = new HashMap<String,ArrayList<String>>();
+		HashMap<String, ArrayList<String>> airportList = new HashMap<String, ArrayList<String>>();
 		final Connection connection = this.connectionManager.connectionFromPool();
 		if (connection == null) {
 			Log.error("Could not search for airports, no database connection.");
@@ -170,50 +177,137 @@ public class AirportDatabase {
 	{
 		Log.verbose("airportsByField: " + fields.toString());
 
-		ArrayList<Airport> airports = new ArrayList<Airport>();
-		final Connection connection = this.connectionManager.connectionFromPool();
-		if (connection == null) {
-			Log.error("Could not search for airports, no database connection.");
-		} else {
-			try {
-				// Prepare statement
-				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRPORTS);
-				statementBuilder.addSelectFields(new String[] { FIELD_AIRPORT_ID, FIELD_NAME, FIELD_CITY,
-						FIELD_COUNTRY, FIELD_IATA_FAA, FIELD_ICAO, FIELD_LATITUDE, FIELD_LONGITUDE, FIELD_ALTITUDE,
-						FIELD_TIMEZONE, FIELD_DST });
-				Log.verbose(statementBuilder.getStatement());
-				for (Map.Entry<String, String> entry : fields.entrySet()) {
-					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+		ArrayList<Airport> airportsMatched = new ArrayList<Airport>();
+		// Search Cache
+		boolean foundMatch = false;
+		for (Map.Entry<String, String> entry : fields.entrySet()) {
+			// Check airline id first
+			if (entry.getKey().equals(FIELD_AIRPORT_ID)) {
+				final Integer searchAirportId = Integer.valueOf(entry.getValue());
+				if (this.airportIdCache.containsKey(searchAirportId)) {
+					Airport airport = this.airportIdCache.get(searchAirportId);
+					airportsMatched.add(airport);
+					foundMatch = true;
+					break;
 				}
-				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
-				Log.verbose("Executing SQL statement: " + statement.toString());
-
-				// Execute statement and parse results
-				final ResultSet resultSet = statement.executeQuery();
-				while (resultSet.next()) {
-					final int resultAirportId = resultSet.getInt(FIELD_AIRPORT_ID);
-					final String resultName = resultSet.getString(FIELD_NAME);
-					final String resultCity = resultSet.getString(FIELD_CITY);
-					final String resultCountry = resultSet.getString(FIELD_COUNTRY);
-					final String resultIataFaa = resultSet.getString(FIELD_IATA_FAA);
-					final String resultIcao = resultSet.getString(FIELD_ICAO);
-					final float resultLatitude = resultSet.getFloat(FIELD_LATITUDE);
-					final float resultLongitude = resultSet.getFloat(FIELD_LONGITUDE);
-					final int resultAltitude = resultSet.getInt(FIELD_ALTITUDE);
-					final float resultTimezone = resultSet.getFloat(FIELD_TIMEZONE);
-					final String resultDst = resultSet.getString(FIELD_DST);
-					Airport airport = new Airport(resultAirportId, resultName, resultCity, resultCountry,
-							resultIataFaa, resultIcao, resultLatitude, resultLongitude, resultAltitude, resultTimezone,
-							resultDst.charAt(0));
-					airports.add(airport);
-				}
-			} catch (final SQLException e) {
-				Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
+			}
+			// Check rest of the fields
+			ArrayList<Airport> airportsForKey = this.airportCache.get(entry.getValue());
+			if (this.airportCache.containsKey(entry.getValue())) {
+				// TODO: implement
 			}
 		}
+		// Search SQL
+		if (!foundMatch) {
+			final Connection connection = this.connectionManager.connectionFromPool();
+			if (connection == null) {
+				Log.error("Could not search for airports, no database connection.");
+			} else {
+				try {
+					// Prepare statement
+					final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRPORTS);
+					statementBuilder.addSelectFields(new String[] { FIELD_AIRPORT_ID, FIELD_NAME, FIELD_CITY,
+							FIELD_COUNTRY, FIELD_IATA_FAA, FIELD_ICAO, FIELD_LATITUDE, FIELD_LONGITUDE, FIELD_ALTITUDE,
+							FIELD_TIMEZONE, FIELD_DST });
+					Log.verbose(statementBuilder.getStatement());
+					for (Map.Entry<String, String> entry : fields.entrySet()) {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					}
+					final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+					Log.verbose("Executing SQL statement: " + statement.toString());
 
-		this.connectionManager.returnToPool(connection);
-		return airports.toArray(new Airport[airports.size()]);
+					// Execute statement and parse results
+					final ResultSet resultSet = statement.executeQuery();
+					while (resultSet.next()) {
+						final int resultAirportId = resultSet.getInt(FIELD_AIRPORT_ID);
+						final String resultName = resultSet.getString(FIELD_NAME);
+						final String resultCity = resultSet.getString(FIELD_CITY);
+						final String resultCountry = resultSet.getString(FIELD_COUNTRY);
+						final String resultIataFaa = resultSet.getString(FIELD_IATA_FAA);
+						final String resultIcao = resultSet.getString(FIELD_ICAO);
+						final float resultLatitude = resultSet.getFloat(FIELD_LATITUDE);
+						final float resultLongitude = resultSet.getFloat(FIELD_LONGITUDE);
+						final int resultAltitude = resultSet.getInt(FIELD_ALTITUDE);
+						final float resultTimezone = resultSet.getFloat(FIELD_TIMEZONE);
+						final String resultDst = resultSet.getString(FIELD_DST);
+						Airport airport = new Airport(resultAirportId, resultName, resultCity, resultCountry,
+								resultIataFaa, resultIcao, resultLatitude, resultLongitude, resultAltitude,
+								resultTimezone, resultDst.charAt(0));
+						airportsMatched.add(airport);
+						addAirportToCache(airport);
+					}
+				} catch (final SQLException e) {
+					Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
+				}
+			}
+			this.connectionManager.returnToPool(connection);
+		}
+
+		return airportsMatched.toArray(new Airport[airportsMatched.size()]);
 	}
-	
+
+	/**
+	 * @param airline
+	 * @param propertyName
+	 * @return
+	 */
+	private String getPropertyFromAirlineAsString(Airport airport, String propertyName)
+	{
+		String result = null;
+		if (propertyName.equals(FIELD_AIRPORT_ID)) {
+			result = String.valueOf(airport.getAirportId());
+		} else if (propertyName.equals(FIELD_ALTITUDE)) {
+			result = String.valueOf(airport.getAltitude());
+		} else if (propertyName.equals(FIELD_CITY)) {
+			result = airport.getCity();
+		} else if (propertyName.equals(FIELD_COUNTRY)) {
+			result = airport.getCountry();
+		} else if (propertyName.equals(FIELD_DST)) {
+			result = String.valueOf(airport.getDst());
+		} else if (propertyName.equals(FIELD_IATA_FAA)) {
+			result = airport.getIata_faa();
+		} else if (propertyName.equals(FIELD_ICAO)) {
+			result = airport.getIcao();
+		} else if (propertyName.equals(FIELD_LATITUDE)) {
+			result = String.valueOf(airport.getLatitude());
+		} else if (propertyName.equals(FIELD_LONGITUDE)) {
+			result = String.valueOf(airport.getLongitude());
+		} else if (propertyName.equals(FIELD_NAME)) {
+			result = airport.getName();
+		} else if (propertyName.equals(FIELD_TIMEZONE)) {
+			result = String.valueOf(airport.getTimezone());
+		}
+		return result;
+	}
+
+	/**
+	 * @param airline
+	 */
+	private void addAirportToCache(Airport airport)
+	{
+		// Cache id
+		final Integer id = airport.getAirportId();
+		this.airportIdCache.put(id, airport);
+		// Cache major keys
+		ArrayList<String> keys = new ArrayList<String>();
+		keys.add(airport.getCity());
+		keys.add(airport.getCountry());
+		keys.add(airport.getIata_faa());
+		keys.add(airport.getIcao());
+		keys.add(airport.getName());
+		for (String key : keys) {
+			ArrayList<Airport> airports = this.airportCache.get(key);
+			if (airports == null) {
+				airports = new ArrayList<Airport>();
+				this.airportCache.put(key, airports);
+				Log.debug("Airport cache now containing " + this.airportCache.size() + " keywords.");
+			}
+			if (!airports.contains(airport)) {
+				Log.debug("Added " + airport.getName() + " added to keyword " + key + ", which now contains"
+						+ airports.size() + " airlines.");
+				airports.add(airport);
+			}
+		}
+	}
+
 }
