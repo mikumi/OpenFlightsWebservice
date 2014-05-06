@@ -12,8 +12,8 @@ public class Route {
 	private final int stops;
 	private final String equipment;
 
-	public Route(Airline airline, Airport sourceAirport, Airport destinationAirport, boolean codeshare, int stops,
-			String equipment)
+	public Route(final Airline airline, final Airport sourceAirport, final Airport destinationAirport,
+			final boolean codeshare, final int stops, final String equipment)
 	{
 		this.airline = airline;
 		this.sourceAirport = sourceAirport;
@@ -28,10 +28,12 @@ public class Route {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder(17, 31).append(airline).append(sourceAirport).append(destinationAirport)
-				.append(codeshare).append(stops).append(equipment).toHashCode();
+		return new HashCodeBuilder(17, 31).append(this.airline).append(this.sourceAirport)
+				.append(this.destinationAirport).append(this.codeshare).append(this.stops).append(this.equipment)
+				.toHashCode();
 	}
 
 	/*
@@ -39,7 +41,8 @@ public class Route {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	@Override
+	public boolean equals(final Object obj)
 	{
 		if (obj == null)
 			return false;
@@ -48,10 +51,10 @@ public class Route {
 		if (!(obj instanceof Airline))
 			return false;
 
-		Route route = (Route) obj;
-		return new EqualsBuilder().append(airline, route.airline).append(sourceAirport, route.sourceAirport)
-				.append(destinationAirport, route.destinationAirport).append(codeshare, route.codeshare)
-				.append(stops, route.stops).append(equipment, route.equipment).isEquals();
+		final Route route = (Route) obj;
+		return new EqualsBuilder().append(this.airline, route.airline).append(this.sourceAirport, route.sourceAirport)
+				.append(this.destinationAirport, route.destinationAirport).append(this.codeshare, route.codeshare)
+				.append(this.stops, route.stops).append(this.equipment, route.equipment).isEquals();
 	}
 
 	/*
@@ -62,8 +65,8 @@ public class Route {
 	@Override
 	public String toString()
 	{
-		final String description = airline.getCallsign() + " from " + sourceAirport.getName() + " to "
-				+ destinationAirport.getName();
+		final String description = this.airline.getCallsign() + " from " + this.sourceAirport.getName() + " to "
+				+ this.destinationAirport.getName();
 		return description;
 	}
 
@@ -72,7 +75,7 @@ public class Route {
 	 */
 	public Airline getAirline()
 	{
-		return airline;
+		return this.airline;
 	}
 
 	/**
@@ -80,7 +83,7 @@ public class Route {
 	 */
 	public Airport getSourceAirport()
 	{
-		return sourceAirport;
+		return this.sourceAirport;
 	}
 
 	/**
@@ -88,7 +91,7 @@ public class Route {
 	 */
 	public Airport getDestinationAirport()
 	{
-		return destinationAirport;
+		return this.destinationAirport;
 	}
 
 	/**
@@ -96,7 +99,7 @@ public class Route {
 	 */
 	public boolean isCodeshare()
 	{
-		return codeshare;
+		return this.codeshare;
 	}
 
 	/**
@@ -104,7 +107,7 @@ public class Route {
 	 */
 	public int getStops()
 	{
-		return stops;
+		return this.stops;
 	}
 
 	/**
@@ -112,7 +115,7 @@ public class Route {
 	 */
 	public String getEquipment()
 	{
-		return equipment;
+		return this.equipment;
 	}
 
 }

@@ -24,8 +24,9 @@ public class Airport {
 	private final float timezone;
 	private final char dst;
 
-	public Airport(int airportId, String name, String city, String country, String iata_faa, String icao,
-			float latitude, float longitude, int altitude, float timezone, char dst)
+	public Airport(final int airportId, final String name, final String city, final String country,
+			final String iata_faa, final String icao, final float latitude, final float longitude, final int altitude,
+			final float timezone, final char dst)
 	{
 		this.airportId = airportId;
 		this.name = name;
@@ -45,11 +46,12 @@ public class Airport {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder(17, 31).append(airportId).append(name).append(city).append(country).append(iata_faa)
-				.append(icao).append(latitude).append(longitude).append(altitude).append(timezone).append(dst)
-				.toHashCode();
+		return new HashCodeBuilder(17, 31).append(this.airportId).append(this.name).append(this.city)
+				.append(this.country).append(this.iata_faa).append(this.icao).append(this.latitude)
+				.append(this.longitude).append(this.altitude).append(this.timezone).append(this.dst).toHashCode();
 	}
 
 	/*
@@ -57,7 +59,8 @@ public class Airport {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	@Override
+	public boolean equals(final Object obj)
 	{
 		if (obj == null)
 			return false;
@@ -66,12 +69,13 @@ public class Airport {
 		if (!(obj instanceof Airline))
 			return false;
 
-		Airport airport = (Airport) obj;
-		return new EqualsBuilder().append(airportId, airport.airportId).append(name, airport.name)
-				.append(city, airport.city).append(country, airport.country).append(iata_faa, airport.iata_faa)
-				.append(icao, airport.icao).append(latitude, airport.latitude).append(longitude, airport.longitude)
-				.append(altitude, airport.altitude).append(timezone, airport.timezone).append(dst, airport.dst)
-				.isEquals();
+		final Airport airport = (Airport) obj;
+		return new EqualsBuilder().append(this.airportId, airport.airportId).append(this.name, airport.name)
+				.append(this.city, airport.city).append(this.country, airport.country)
+				.append(this.iata_faa, airport.iata_faa).append(this.icao, airport.icao)
+				.append(this.latitude, airport.latitude).append(this.longitude, airport.longitude)
+				.append(this.altitude, airport.altitude).append(this.timezone, airport.timezone)
+				.append(this.dst, airport.dst).isEquals();
 	}
 
 	/*
@@ -92,7 +96,7 @@ public class Airport {
 	 */
 	public int getAirportId()
 	{
-		return airportId;
+		return this.airportId;
 	}
 
 	/**
@@ -100,7 +104,7 @@ public class Airport {
 	 */
 	public String getName()
 	{
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -108,7 +112,7 @@ public class Airport {
 	 */
 	public String getCity()
 	{
-		return city;
+		return this.city;
 	}
 
 	/**
@@ -116,7 +120,7 @@ public class Airport {
 	 */
 	public String getCountry()
 	{
-		return country;
+		return this.country;
 	}
 
 	/**
@@ -124,7 +128,7 @@ public class Airport {
 	 */
 	public String getIata_faa()
 	{
-		return iata_faa;
+		return this.iata_faa;
 	}
 
 	/**
@@ -132,7 +136,7 @@ public class Airport {
 	 */
 	public String getIcao()
 	{
-		return icao;
+		return this.icao;
 	}
 
 	/**
@@ -140,7 +144,7 @@ public class Airport {
 	 */
 	public float getLatitude()
 	{
-		return latitude;
+		return this.latitude;
 	}
 
 	/**
@@ -148,7 +152,7 @@ public class Airport {
 	 */
 	public float getLongitude()
 	{
-		return longitude;
+		return this.longitude;
 	}
 
 	/**
@@ -156,7 +160,7 @@ public class Airport {
 	 */
 	public int getAltitude()
 	{
-		return altitude;
+		return this.altitude;
 	}
 
 	/**
@@ -164,7 +168,7 @@ public class Airport {
 	 */
 	public float getTimezone()
 	{
-		return timezone;
+		return this.timezone;
 	}
 
 	/**
@@ -172,7 +176,7 @@ public class Airport {
 	 */
 	public char getDst()
 	{
-		return dst;
+		return this.dst;
 	}
 
 }

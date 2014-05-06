@@ -35,9 +35,9 @@ public class OpenFlightsWebservice {
 		Log.info("**********************************************************************");
 		Log.info("");
 
-		MySqlConnectionManager connectionManager = new MySqlConnectionManager(settings.getSqlHost(),
+		final MySqlConnectionManager connectionManager = new MySqlConnectionManager(settings.getSqlHost(),
 				settings.getSqlPort(), settings.getSqlUser(), settings.getSqlPassword(), settings.getSqlDatabase());
-		FlightInformation flightInformation = new FlightInformation(connectionManager);
+		final FlightInformation flightInformation = new FlightInformation(connectionManager);
 		ApplicationContext.getInstance().init(flightInformation);
 
 		// Add a new HTTP server listening on port xxx and attach the boarding pass web service

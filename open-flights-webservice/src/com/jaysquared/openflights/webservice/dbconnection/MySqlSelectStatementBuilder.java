@@ -22,7 +22,7 @@ public class MySqlSelectStatementBuilder {
 	/**
 	 * @param tableName
 	 */
-	public MySqlSelectStatementBuilder(String tableName)
+	public MySqlSelectStatementBuilder(final String tableName)
 	{
 		this.selectFields = new ArrayList<String>();
 		this.tableName = tableName;
@@ -32,42 +32,42 @@ public class MySqlSelectStatementBuilder {
 	/**
 	 * @param fieldName
 	 */
-	public void addSelectField(String fieldName)
+	public void addSelectField(final String fieldName)
 	{
-		selectFields.add(fieldName);
+		this.selectFields.add(fieldName);
 	}
 
 	/**
 	 * @param fieldNames
 	 */
-	public void addSelectFields(String[] fieldNames)
+	public void addSelectFields(final String[] fieldNames)
 	{
-		for (String fieldName : fieldNames) {
-			selectFields.add(fieldName);
+		for (final String fieldName : fieldNames) {
+			this.selectFields.add(fieldName);
 		}
 	}
-	
+
 	/**
 	 * @param fieldName
 	 * @param fieldValue
 	 */
-	public void addWhereField(String fieldName, String fieldValue)
+	public void addWhereField(final String fieldName, final String fieldValue)
 	{
-		whereFields.put(fieldName, "'" + fieldValue + "'");
+		this.whereFields.put(fieldName, "'" + fieldValue + "'");
 	}
 
 	/**
 	 * @param fieldName
 	 */
-	public void addWhereFieldWithPlaceholder(String fieldName)
+	public void addWhereFieldWithPlaceholder(final String fieldName)
 	{
-		whereFields.put(fieldName, PLACEHOLDER);
+		this.whereFields.put(fieldName, PLACEHOLDER);
 	}
 
-	public void addWhereFieldsWithPlaceholder(String[] fieldNames)
+	public void addWhereFieldsWithPlaceholder(final String[] fieldNames)
 	{
-		for (String fieldname : fieldNames) {
-			whereFields.put(fieldname, PLACEHOLDER);
+		for (final String fieldname : fieldNames) {
+			this.whereFields.put(fieldname, PLACEHOLDER);
 		}
 	}
 
@@ -76,13 +76,13 @@ public class MySqlSelectStatementBuilder {
 	 */
 	public String getStatement()
 	{
-		StringBuilder statementStringBuilder = new StringBuilder(100);
+		final StringBuilder statementStringBuilder = new StringBuilder(100);
 		// select
 		statementStringBuilder.append("SELECT ");
-		if (selectFields.size() > 0) {
-			Iterator<String> it = this.selectFields.iterator();
+		if (this.selectFields.size() > 0) {
+			final Iterator<String> it = this.selectFields.iterator();
 			while (it.hasNext()) {
-				String fieldName = it.next();
+				final String fieldName = it.next();
 				statementStringBuilder.append(fieldName);
 				if (it.hasNext()) {
 					statementStringBuilder.append(",");
@@ -93,13 +93,13 @@ public class MySqlSelectStatementBuilder {
 		}
 		// from
 		statementStringBuilder.append(" FROM ");
-		statementStringBuilder.append(tableName);
+		statementStringBuilder.append(this.tableName);
 		// where
-		if (whereFields.size() > 0) {
+		if (this.whereFields.size() > 0) {
 			statementStringBuilder.append(" WHERE ");
-			Iterator<Map.Entry<String, String>> it = whereFields.entrySet().iterator();
+			final Iterator<Map.Entry<String, String>> it = this.whereFields.entrySet().iterator();
 			while (it.hasNext()) {
-				Map.Entry<String, String> entry = it.next();
+				final Map.Entry<String, String> entry = it.next();
 				statementStringBuilder.append(entry.getKey());
 				statementStringBuilder.append("=");
 				statementStringBuilder.append(entry.getValue());
@@ -111,12 +111,16 @@ public class MySqlSelectStatementBuilder {
 		}
 		return statementStringBuilder.toString();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
-		return getStatement();
+	@Override
+	public String toString()
+	{
+		return this.getStatement();
 	}
 
 }

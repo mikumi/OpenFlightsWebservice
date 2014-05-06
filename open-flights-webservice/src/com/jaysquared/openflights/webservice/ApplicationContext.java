@@ -7,7 +7,7 @@ import com.jaysquared.openflights.webservice.data.FlightInformation;
 
 /**
  * @author michaelkuck
- *
+ * 
  */
 public class ApplicationContext {
 
@@ -36,8 +36,9 @@ public class ApplicationContext {
 	{
 		return SingletonHolder.INSTANCE;
 	}
-	
-	public void init(FlightInformation flightInformation) {
+
+	public void init(final FlightInformation flightInformation)
+	{
 		this.flightInformation = flightInformation;
 	}
 
@@ -46,6 +47,6 @@ public class ApplicationContext {
 	 */
 	public FlightInformation getFlightInformation()
 	{
-		return flightInformation;
+		return this.flightInformation;
 	}
 }

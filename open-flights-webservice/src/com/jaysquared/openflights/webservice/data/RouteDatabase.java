@@ -43,27 +43,27 @@ public class RouteDatabase {
 	{
 		this.connectionManager = connectionManager;
 	}
-	
+
 	/**
 	 * @param field
 	 * @param value
 	 */
-	public Route[] routesByField(String field, String value)
+	public Route[] routesByField(final String field, final String value)
 	{
-		HashMap<String, String> fields = new HashMap<String, String>();
+		final HashMap<String, String> fields = new HashMap<String, String>();
 		fields.put(field, value);
-		return routesByFields(fields);
+		return this.routesByFields(fields);
 	}
 
 	/**
 	 * @param fields
 	 * @return
 	 */
-	public Route[] routesByFields(Map<String, String> fields)
+	public Route[] routesByFields(final Map<String, String> fields)
 	{
 		Log.verbose("routesByField: " + fields.toString());
 
-		ArrayList<Route> routes = new ArrayList<Route>();
+		final ArrayList<Route> routes = new ArrayList<Route>();
 		final Connection connection = this.connectionManager.connectionFromPool();
 		if (connection == null) {
 			Log.error("Could not search for airports, no database connection.");
@@ -74,7 +74,7 @@ public class RouteDatabase {
 				statementBuilder.addSelectFields(new String[] { FIELD_AIRLINE_ID, FIELD_SOURCE_AIRPORT_ID,
 						FIELD_DESTINATION_AIRPORT_ID, FIELD_CODESHARE, FIELD_STOPS, FIELD_EQUIPMENT, });
 				Log.verbose(statementBuilder.getStatement());
-				for (Map.Entry<String, String> entry : fields.entrySet()) {
+				for (final Map.Entry<String, String> entry : fields.entrySet()) {
 					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 				}
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
@@ -90,18 +90,18 @@ public class RouteDatabase {
 					final int resultStops = resultSet.getInt(FIELD_STOPS);
 					final String resultEquipment = resultSet.getString(FIELD_EQUIPMENT);
 					// TOOD: Improve this. this should be done with sql joins!!
-					AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation()
+					final AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation()
 							.getAirlineDatabase();
-					Airline[] airlines = airlineDatabase.airlinesByField(AirlineDatabase.FIELD_AIRLINE_ID,
+					final Airline[] airlines = airlineDatabase.airlinesByField(AirlineDatabase.FIELD_AIRLINE_ID,
 							String.valueOf(resultAirlineId));
-					AirportDatabase airportDatabase = ApplicationContext.getInstance().getFlightInformation()
+					final AirportDatabase airportDatabase = ApplicationContext.getInstance().getFlightInformation()
 							.getAirportDatabase();
-					Airport[] sourceAirports = airportDatabase.airportsByField(AirportDatabase.FIELD_AIRPORT_ID,
+					final Airport[] sourceAirports = airportDatabase.airportsByField(AirportDatabase.FIELD_AIRPORT_ID,
 							String.valueOf(resultSourceAirportId));
-					Airport[] destinationAirports = airportDatabase.airportsByField(AirportDatabase.FIELD_AIRPORT_ID,
-							String.valueOf(resultDestinationAirportId));
+					final Airport[] destinationAirports = airportDatabase.airportsByField(
+							AirportDatabase.FIELD_AIRPORT_ID, String.valueOf(resultDestinationAirportId));
 					if ((airlines.length >= 1) && (sourceAirports.length >= 1) && (destinationAirports.length >= 1)) {
-						Route route = new Route(airlines[0], sourceAirports[0], destinationAirports[0],
+						final Route route = new Route(airlines[0], sourceAirports[0], destinationAirports[0],
 								resultCodeShare, resultStops, resultEquipment);
 						routes.add(route);
 					} else {

@@ -7,8 +7,9 @@ public class FlightInformation {
 	private final AirlineDatabase airlineDatabase;
 	private final AirportDatabase airportDatabase;
 	private final RouteDatabase routeDatabase;
-	
-	public FlightInformation(MySqlConnectionManager connectionManager) {
+
+	public FlightInformation(final MySqlConnectionManager connectionManager)
+	{
 		this.airlineDatabase = new AirlineDatabase(connectionManager);
 		this.airportDatabase = new AirportDatabase(connectionManager);
 		this.routeDatabase = new RouteDatabase(connectionManager);
@@ -19,7 +20,7 @@ public class FlightInformation {
 	 */
 	public AirlineDatabase getAirlineDatabase()
 	{
-		return airlineDatabase;
+		return this.airlineDatabase;
 	}
 
 	/**
@@ -27,7 +28,7 @@ public class FlightInformation {
 	 */
 	public AirportDatabase getAirportDatabase()
 	{
-		return airportDatabase;
+		return this.airportDatabase;
 	}
 
 	/**
@@ -35,7 +36,7 @@ public class FlightInformation {
 	 */
 	public RouteDatabase getRouteDatabase()
 	{
-		return routeDatabase;
+		return this.routeDatabase;
 	}
-	
+
 }

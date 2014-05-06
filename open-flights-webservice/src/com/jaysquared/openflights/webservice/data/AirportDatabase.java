@@ -50,22 +50,22 @@ public class AirportDatabase {
 		this.airportIdCache = new HashMap<Integer, Airport>();
 	}
 
-	public int[] airportIdsByField(String field, String value)
+	public int[] airportIdsByField(final String field, final String value)
 	{
-		HashMap<String, String> fields = new HashMap<String, String>();
+		final HashMap<String, String> fields = new HashMap<String, String>();
 		fields.put(field, value);
-		return airportIdsByFields(fields);
+		return this.airportIdsByFields(fields);
 	}
 
 	/**
 	 * @param fields
 	 * @return
 	 */
-	public int[] airportIdsByFields(Map<String, String> fields)
+	public int[] airportIdsByFields(final Map<String, String> fields)
 	{
 		Log.verbose("airportIdsByField: " + fields.toString());
 
-		ArrayList<Integer> airportIds = new ArrayList<Integer>();
+		final ArrayList<Integer> airportIds = new ArrayList<Integer>();
 		final Connection connection = this.connectionManager.connectionFromPool();
 		if (connection == null) {
 			Log.error("Could not search for airports, no database connection.");
@@ -75,7 +75,7 @@ public class AirportDatabase {
 				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRPORTS);
 				statementBuilder.addSelectField(FIELD_AIRPORT_ID);
 				Log.verbose(statementBuilder.getStatement());
-				for (Map.Entry<String, String> entry : fields.entrySet()) {
+				for (final Map.Entry<String, String> entry : fields.entrySet()) {
 					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 				}
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
@@ -93,7 +93,7 @@ public class AirportDatabase {
 		}
 		this.connectionManager.returnToPool(connection);
 
-		int ids[] = new int[airportIds.size()];
+		final int ids[] = new int[airportIds.size()];
 		for (int i = 0; i < airportIds.size(); i++) {
 			ids[i] = airportIds.get(i).intValue();
 		}
@@ -105,22 +105,22 @@ public class AirportDatabase {
 	 * @param value
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> airportListByField(String field, String value)
+	public Map<String, ArrayList<String>> airportListByField(final String field, final String value)
 	{
-		HashMap<String, String> fields = new HashMap<String, String>();
+		final HashMap<String, String> fields = new HashMap<String, String>();
 		fields.put(field, value);
-		return airportListByFields(fields);
+		return this.airportListByFields(fields);
 	}
 
 	/**
 	 * @param fields
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> airportListByFields(Map<String, String> fields)
+	public Map<String, ArrayList<String>> airportListByFields(final Map<String, String> fields)
 	{
 		Log.verbose("airportListByField: " + fields.toString());
 
-		HashMap<String, ArrayList<String>> airportList = new HashMap<String, ArrayList<String>>();
+		final HashMap<String, ArrayList<String>> airportList = new HashMap<String, ArrayList<String>>();
 		final Connection connection = this.connectionManager.connectionFromPool();
 		if (connection == null) {
 			Log.error("Could not search for airports, no database connection.");
@@ -131,7 +131,7 @@ public class AirportDatabase {
 				statementBuilder.addSelectField(FIELD_NAME);
 				statementBuilder.addSelectField(FIELD_IATA_FAA);
 				Log.verbose(statementBuilder.getStatement());
-				for (Map.Entry<String, String> entry : fields.entrySet()) {
+				for (final Map.Entry<String, String> entry : fields.entrySet()) {
 					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 				}
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
@@ -162,40 +162,40 @@ public class AirportDatabase {
 	 * @param field
 	 * @param value
 	 */
-	public Airport[] airportsByField(String field, String value)
+	public Airport[] airportsByField(final String field, final String value)
 	{
-		HashMap<String, String> fields = new HashMap<String, String>();
+		final HashMap<String, String> fields = new HashMap<String, String>();
 		fields.put(field, value);
-		return airportsByFields(fields);
+		return this.airportsByFields(fields);
 	}
 
 	/**
 	 * @param fields
 	 * @return
 	 */
-	public Airport[] airportsByFields(Map<String, String> fields)
+	public Airport[] airportsByFields(final Map<String, String> fields)
 	{
 		Log.verbose("airportsByField: " + fields.toString());
 
-		ArrayList<Airport> airportsMatched = new ArrayList<Airport>();
+		final ArrayList<Airport> airportsMatched = new ArrayList<Airport>();
 		// Search Cache
 		boolean foundMatch = false;
-		for (Map.Entry<String, String> entry : fields.entrySet()) {
+		for (final Map.Entry<String, String> entry : fields.entrySet()) {
 			// Check airline id first
 			if (entry.getKey().equals(FIELD_AIRPORT_ID)) {
 				final Integer searchAirportId = Integer.valueOf(entry.getValue());
 				if (this.airportIdCache.containsKey(searchAirportId)) {
-					Airport airport = this.airportIdCache.get(searchAirportId);
+					final Airport airport = this.airportIdCache.get(searchAirportId);
 					airportsMatched.add(airport);
 					foundMatch = true;
 					break;
 				}
 			}
 			// Check rest of the fields
-			ArrayList<Airport> airportsForKey = this.airportCache.get(entry.getValue());
-			if (this.airportCache.containsKey(entry.getValue())) {
-				// TODO: implement
-			}
+//			ArrayList<Airport> airportsForKey = this.airportCache.get(entry.getValue());
+//			if (this.airportCache.containsKey(entry.getValue())) {
+//				// TODO: implement
+//			}
 		}
 		// Search SQL
 		if (!foundMatch) {
@@ -210,7 +210,7 @@ public class AirportDatabase {
 							FIELD_COUNTRY, FIELD_IATA_FAA, FIELD_ICAO, FIELD_LATITUDE, FIELD_LONGITUDE, FIELD_ALTITUDE,
 							FIELD_TIMEZONE, FIELD_DST });
 					Log.verbose(statementBuilder.getStatement());
-					for (Map.Entry<String, String> entry : fields.entrySet()) {
+					for (final Map.Entry<String, String> entry : fields.entrySet()) {
 						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
 					final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
@@ -230,11 +230,11 @@ public class AirportDatabase {
 						final int resultAltitude = resultSet.getInt(FIELD_ALTITUDE);
 						final float resultTimezone = resultSet.getFloat(FIELD_TIMEZONE);
 						final String resultDst = resultSet.getString(FIELD_DST);
-						Airport airport = new Airport(resultAirportId, resultName, resultCity, resultCountry,
+						final Airport airport = new Airport(resultAirportId, resultName, resultCity, resultCountry,
 								resultIataFaa, resultIcao, resultLatitude, resultLongitude, resultAltitude,
 								resultTimezone, resultDst.charAt(0));
 						airportsMatched.add(airport);
-						addAirportToCache(airport);
+						this.addAirportToCache(airport);
 					}
 				} catch (final SQLException e) {
 					Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
@@ -246,56 +246,56 @@ public class AirportDatabase {
 		return airportsMatched.toArray(new Airport[airportsMatched.size()]);
 	}
 
-	/**
-	 * @param airline
-	 * @param propertyName
-	 * @return
-	 */
-	private String getPropertyFromAirlineAsString(Airport airport, String propertyName)
-	{
-		String result = null;
-		if (propertyName.equals(FIELD_AIRPORT_ID)) {
-			result = String.valueOf(airport.getAirportId());
-		} else if (propertyName.equals(FIELD_ALTITUDE)) {
-			result = String.valueOf(airport.getAltitude());
-		} else if (propertyName.equals(FIELD_CITY)) {
-			result = airport.getCity();
-		} else if (propertyName.equals(FIELD_COUNTRY)) {
-			result = airport.getCountry();
-		} else if (propertyName.equals(FIELD_DST)) {
-			result = String.valueOf(airport.getDst());
-		} else if (propertyName.equals(FIELD_IATA_FAA)) {
-			result = airport.getIata_faa();
-		} else if (propertyName.equals(FIELD_ICAO)) {
-			result = airport.getIcao();
-		} else if (propertyName.equals(FIELD_LATITUDE)) {
-			result = String.valueOf(airport.getLatitude());
-		} else if (propertyName.equals(FIELD_LONGITUDE)) {
-			result = String.valueOf(airport.getLongitude());
-		} else if (propertyName.equals(FIELD_NAME)) {
-			result = airport.getName();
-		} else if (propertyName.equals(FIELD_TIMEZONE)) {
-			result = String.valueOf(airport.getTimezone());
-		}
-		return result;
-	}
+//	/**
+//	 * @param airline
+//	 * @param propertyName
+//	 * @return
+//	 */
+//	private String getPropertyFromAirlineAsString(Airport airport, String propertyName)
+//	{
+//		String result = null;
+//		if (propertyName.equals(FIELD_AIRPORT_ID)) {
+//			result = String.valueOf(airport.getAirportId());
+//		} else if (propertyName.equals(FIELD_ALTITUDE)) {
+//			result = String.valueOf(airport.getAltitude());
+//		} else if (propertyName.equals(FIELD_CITY)) {
+//			result = airport.getCity();
+//		} else if (propertyName.equals(FIELD_COUNTRY)) {
+//			result = airport.getCountry();
+//		} else if (propertyName.equals(FIELD_DST)) {
+//			result = String.valueOf(airport.getDst());
+//		} else if (propertyName.equals(FIELD_IATA_FAA)) {
+//			result = airport.getIata_faa();
+//		} else if (propertyName.equals(FIELD_ICAO)) {
+//			result = airport.getIcao();
+//		} else if (propertyName.equals(FIELD_LATITUDE)) {
+//			result = String.valueOf(airport.getLatitude());
+//		} else if (propertyName.equals(FIELD_LONGITUDE)) {
+//			result = String.valueOf(airport.getLongitude());
+//		} else if (propertyName.equals(FIELD_NAME)) {
+//			result = airport.getName();
+//		} else if (propertyName.equals(FIELD_TIMEZONE)) {
+//			result = String.valueOf(airport.getTimezone());
+//		}
+//		return result;
+//	}
 
 	/**
 	 * @param airline
 	 */
-	private void addAirportToCache(Airport airport)
+	private synchronized void addAirportToCache(final Airport airport)
 	{
 		// Cache id
 		final Integer id = airport.getAirportId();
 		this.airportIdCache.put(id, airport);
 		// Cache major keys
-		ArrayList<String> keys = new ArrayList<String>();
+		final ArrayList<String> keys = new ArrayList<String>();
 		keys.add(airport.getCity());
 		keys.add(airport.getCountry());
 		keys.add(airport.getIata_faa());
 		keys.add(airport.getIcao());
 		keys.add(airport.getName());
-		for (String key : keys) {
+		for (final String key : keys) {
 			ArrayList<Airport> airports = this.airportCache.get(key);
 			if (airports == null) {
 				airports = new ArrayList<Airport>();

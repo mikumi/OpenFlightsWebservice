@@ -23,14 +23,14 @@ public class Settings {
 
 	public Settings()
 	{
-		werbservicePortHTTP = 8891;
-		webservicePortHTTPS = 8892;
-		
-		sqlHost = "localhost";
-		sqlPort = 3306;
-		sqlUser = "root";
-		sqlPassword = "";
-		sqlDatabase = "open_flights";
+		this.werbservicePortHTTP = 8891;
+		this.webservicePortHTTPS = 8892;
+
+		this.sqlHost = "localhost";
+		this.sqlPort = 3306;
+		this.sqlUser = "root";
+		this.sqlPassword = "";
+		this.sqlDatabase = "open_flights";
 	}
 
 	/**

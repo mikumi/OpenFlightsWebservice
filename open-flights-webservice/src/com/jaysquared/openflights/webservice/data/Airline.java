@@ -49,10 +49,12 @@ public class Airline {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder(17, 31).append(airlineId).append(name).append(alias).append(iata).append(icao)
-				.append(callsign).append(country).append(active).toHashCode();
+		return new HashCodeBuilder(17, 31).append(this.airlineId).append(this.name).append(this.alias)
+				.append(this.iata).append(this.icao).append(this.callsign).append(this.country).append(this.active)
+				.toHashCode();
 	}
 
 	/*
@@ -60,7 +62,8 @@ public class Airline {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	@Override
+	public boolean equals(final Object obj)
 	{
 		if (obj == null)
 			return false;
@@ -69,11 +72,11 @@ public class Airline {
 		if (!(obj instanceof Airline))
 			return false;
 
-		Airline airline = (Airline) obj;
-		return new EqualsBuilder().append(airlineId, airline.airlineId).append(name, airline.name)
-				.append(alias, airline.alias).append(iata, airline.iata).append(icao, airline.icao)
-				.append(callsign, airline.callsign).append(country, airline.country).append(active, airline.active)
-				.isEquals();
+		final Airline airline = (Airline) obj;
+		return new EqualsBuilder().append(this.airlineId, airline.airlineId).append(this.name, airline.name)
+				.append(this.alias, airline.alias).append(this.iata, airline.iata).append(this.icao, airline.icao)
+				.append(this.callsign, airline.callsign).append(this.country, airline.country)
+				.append(this.active, airline.active).isEquals();
 	}
 
 	/*
@@ -152,5 +155,5 @@ public class Airline {
 	{
 		return this.airlineId;
 	}
-	
+
 }
