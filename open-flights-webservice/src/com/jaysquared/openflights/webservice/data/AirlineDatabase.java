@@ -32,8 +32,8 @@ public class AirlineDatabase {
 	final public static String FIELD_COUNTRY = "country";
 	final public static String FIELD_ACTIVE = "active";
 
-	final public Map<String, ArrayList<Airline>> airlineCache;
-	final public Map<Integer, Airline> airlineIdCache;
+	final private Map<String, ArrayList<Airline>> airlineCache;
+	final private Map<Integer, Airline> airlineIdCache;
 
 	final private MySqlConnectionManager connectionManager;
 

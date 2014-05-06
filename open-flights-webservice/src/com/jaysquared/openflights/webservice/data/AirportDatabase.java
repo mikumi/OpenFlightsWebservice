@@ -35,8 +35,8 @@ public class AirportDatabase {
 	final public static String FIELD_TIMEZONE = "timezone";
 	final public static String FIELD_DST = "dst";
 
-	final public Map<String, ArrayList<Airport>> airportCache;
-	final public Map<Integer, Airport> airportIdCache;
+	final private Map<String, ArrayList<Airport>> airportCache;
+	final private Map<Integer, Airport> airportIdCache;
 
 	final private MySqlConnectionManager connectionManager;
 

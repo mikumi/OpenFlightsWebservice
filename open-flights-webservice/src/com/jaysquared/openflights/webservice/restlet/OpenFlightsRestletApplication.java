@@ -32,7 +32,9 @@ public class OpenFlightsRestletApplication extends Application {
 			router.attach(url, RoutesRessource.class);
 		}
 		// Info
-		router.attach("/info", InfoRessource.class);
+		for (final String url : InfoRessource.URLS) {
+			router.attach(url, InfoRessource.class);
+		}
 		return router;
 	}
 

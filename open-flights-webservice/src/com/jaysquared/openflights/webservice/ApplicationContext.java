@@ -4,6 +4,7 @@
 package com.jaysquared.openflights.webservice;
 
 import com.jaysquared.openflights.webservice.data.FlightInformation;
+import com.jaysquared.openflights.webservice.dbconnection.DatabaseInformation;
 
 /**
  * @author michaelkuck
@@ -12,6 +13,7 @@ import com.jaysquared.openflights.webservice.data.FlightInformation;
 public class ApplicationContext {
 
 	private FlightInformation flightInformation;
+	private DatabaseInformation databaseInformation;
 
 	/**
 	 * Private constructor for Singleton
@@ -37,9 +39,14 @@ public class ApplicationContext {
 		return SingletonHolder.INSTANCE;
 	}
 
-	public void init(final FlightInformation flightInformation)
+	/**
+	 * @param flightInformation
+	 * @param databaseInformation
+	 */
+	public void init(final FlightInformation flightInformation, final DatabaseInformation databaseInformation)
 	{
 		this.flightInformation = flightInformation;
+		this.databaseInformation = databaseInformation;
 	}
 
 	/**
@@ -48,5 +55,13 @@ public class ApplicationContext {
 	public FlightInformation getFlightInformation()
 	{
 		return this.flightInformation;
+	}
+
+	/**
+	 * @return the databaseInformation
+	 */
+	public DatabaseInformation getDatabaseInformation()
+	{
+		return this.databaseInformation;
 	}
 }
