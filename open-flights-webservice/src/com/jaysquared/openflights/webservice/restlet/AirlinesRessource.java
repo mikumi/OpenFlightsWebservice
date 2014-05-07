@@ -30,7 +30,7 @@ public class AirlinesRessource extends ServerResource {
 	/**
 	 * @return
 	 */
-	@Get
+	@Get("json")
 	public String getRessource()
 	{
 		final String result;
