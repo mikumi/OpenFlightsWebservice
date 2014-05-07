@@ -4,6 +4,7 @@
 package com.jaysquared.openflights.webservice.restlet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.restlet.resource.Get;
@@ -24,8 +25,7 @@ public class AirlinesRessource extends ServerResource {
 	public static final String SUB_RESOURCE_PLACEHOLDER = "sub";
 	public static final String[] URLS = { URL_ROOT, urlForRessource(SUB_RESOURCE_PLACEHOLDER) };
 
-	public static final String RESOURCE_IDS = "ids";
-	public static final String RESOURCE_LIST = "list";
+	public static final String RESOURCE_INDEX = "index";
 
 	/**
 	 * @return
@@ -37,36 +37,12 @@ public class AirlinesRessource extends ServerResource {
 		final String ressourceSub = (String) this.getRequest().getAttributes().get(SUB_RESOURCE_PLACEHOLDER);
 		if (ressourceSub == null) {
 			result = this.getAirlines();
-		} else if (ressourceSub.equals(RESOURCE_IDS)) {
-			result = this.getAirlineIds();
-		} else if (ressourceSub.equals(RESOURCE_LIST)) {
-			result = this.getAirlineList();
+		} else if (ressourceSub.equals(RESOURCE_INDEX)) {
+			result = this.getAirlineIndex();
 		} else {
 			result = "Ressource not found";
 		}
 		return result;
-	}
-
-	/**
-	 * @return
-	 */
-	private String getAirlineIds()
-	{
-		final Map<String, String> parameters = this.getQuery().getValuesMap();
-		final AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation()
-				.getAirlineDatabase();
-		final int[] airlineIds = airlineDatabase.airlineIdsByFields(parameters);
-
-		final StringBuilder result = new StringBuilder(50);
-		for (final int airlineId : airlineIds) {
-			result.append(airlineId);
-			result.append(",");
-		}
-
-		final Gson gson = new Gson();
-		final String jsonString = gson.toJson(airlineIds);
-
-		return jsonString;
 	}
 
 	/**
@@ -88,15 +64,29 @@ public class AirlinesRessource extends ServerResource {
 	/**
 	 * @return
 	 */
-	private String getAirlineList()
+	private String getAirlineIndex()
 	{
+		// Get data
 		final Map<String, String> parameters = this.getQuery().getValuesMap();
 		final AirlineDatabase airlineDatabase = ApplicationContext.getInstance().getFlightInformation()
 				.getAirlineDatabase();
-		final Map<String, ArrayList<String>> airlineNames = airlineDatabase.airlineListByFields(parameters);
+		final Map<String, ArrayList<String>> airlineIndex = airlineDatabase.airlineIndexByFields(parameters);
 
+		// Create json object
+		ArrayList<Object> jsonObject = new ArrayList<Object>();
+		for (Map.Entry<String, ArrayList<String>> entry : airlineIndex.entrySet()) {
+			final String airlineCode = entry.getKey();
+			for (String airlineName : entry.getValue()) {
+				Map<String, Object> jsonEntry = new HashMap<String, Object>();
+				jsonEntry.put(AirlineDatabase.FIELD_IATA, airlineCode);
+				jsonEntry.put(AirlineDatabase.FIELD_NAME, airlineName);
+				jsonObject.add(jsonEntry);
+			}
+		}
+		
+		// convert json to string
 		final Gson gson = new Gson();
-		final String jsonString = gson.toJson(airlineNames);
+		final String jsonString = gson.toJson(jsonObject);
 
 		return jsonString;
 	}

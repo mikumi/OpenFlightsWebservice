@@ -11,8 +11,8 @@ package com.jaysquared.openflights.webservice;
 public class Version {
 
 	final public static int MAJOR = 0;
-	final public static int MINOR = 3;
-	final public static int PATCH = 7;
+	final public static int MINOR = 4;
+	final public static int PATCH = 0;
 
 	/**
 	 * Returns the full version information as a string. Version numbers separated by ".".

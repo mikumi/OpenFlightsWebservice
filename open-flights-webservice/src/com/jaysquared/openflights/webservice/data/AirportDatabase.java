@@ -109,14 +109,14 @@ public class AirportDatabase {
 	{
 		final HashMap<String, String> fields = new HashMap<String, String>();
 		fields.put(field, value);
-		return this.airportListByFields(fields);
+		return this.airportIndexByFields(fields);
 	}
 
 	/**
 	 * @param fields
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> airportListByFields(final Map<String, String> fields)
+	public Map<String, ArrayList<String>> airportIndexByFields(final Map<String, String> fields)
 	{
 		Log.verbose("airportListByField: " + fields.toString());
 

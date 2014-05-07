@@ -23,8 +23,6 @@ public class RoutesRessource extends ServerResource {
 	public static final String SUB_RESOURCE_PLACEHOLDER = "sub";
 	public static final String[] URLS = { URL_ROOT, urlForRessource(SUB_RESOURCE_PLACEHOLDER) };
 
-//	public static final String RESOURCE_LIST = "list";
-
 	/**
 	 * @return
 	 */
@@ -35,8 +33,6 @@ public class RoutesRessource extends ServerResource {
 		final String ressourceSub = (String) this.getRequest().getAttributes().get(SUB_RESOURCE_PLACEHOLDER);
 		if (ressourceSub == null) {
 			result = this.getRoutes();
-//		} else if (ressourceSub.equals(RESOURCE_LIST)) {
-//			result = getRouteList();
 		} else {
 			result = "Ressource not found";
 		}
@@ -58,21 +54,6 @@ public class RoutesRessource extends ServerResource {
 		return jsonString;
 	}
 
-//	/**
-//	 * @return
-//	 */
-//	private String getAirportList()
-//	{
-//		Map<String, String> parameters = getQuery().getValuesMap();
-//		AirportDatabase airportDatabase = ApplicationContext.getInstance().getFlightInformation().getAirportDatabase();
-//		Map<String,ArrayList<String>> airportNames = airportDatabase.airportListByFields(parameters);
-//			
-//		Gson gson = new Gson();
-//		String jsonString = gson.toJson(airportNames);
-//		
-//		return jsonString;
-//	}
-//	
 	/**
 	 * @param subRessourceName
 	 * @return
