@@ -1,6 +1,6 @@
 package com.jaysquared.openflights.webservice.data;
 
-import com.jaysquared.openflights.webservice.dbconnection.MySqlConnectionManager;
+import com.michael_kuck.commons.mysql.MySqlConnectionManager;
 
 public class FlightInformation {
 

@@ -5,9 +5,9 @@ import org.restlet.data.Protocol;
 
 import com.jaysquared.openflights.webservice.data.FlightInformation;
 import com.jaysquared.openflights.webservice.dbconnection.DatabaseInformation;
-import com.jaysquared.openflights.webservice.dbconnection.MySqlConnectionManager;
 import com.jaysquared.openflights.webservice.restlet.OpenFlightsRestletApplication;
 import com.michael_kuck.commons.Log;
+import com.michael_kuck.commons.mysql.MySqlConnectionManager;
 
 /**
  * 

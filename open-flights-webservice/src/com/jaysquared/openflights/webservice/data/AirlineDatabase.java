@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jaysquared.openflights.webservice.dbconnection.MySqlConnectionManager;
-import com.jaysquared.openflights.webservice.dbconnection.MySqlSelectStatementBuilder;
 import com.michael_kuck.commons.Log;
+import com.michael_kuck.commons.mysql.MySqlConnectionManager;
+import com.michael_kuck.commons.mysql.MySqlSelectStatementBuilder;
 
 /**
  * @author michaelkuck
