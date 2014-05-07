@@ -33,6 +33,8 @@ public class RouteDatabase {
 	final public static String FIELD_CODESHARE = "codeshare";
 	final public static String FIELD_STOPS = "stops";
 	final public static String FIELD_EQUIPMENT = "equipment";
+	
+	private static final String NOT_NULL = "!null";
 
 	final private MySqlConnectionManager connectionManager;
 
@@ -75,7 +77,11 @@ public class RouteDatabase {
 						FIELD_DESTINATION_AIRPORT_ID, FIELD_CODESHARE, FIELD_STOPS, FIELD_EQUIPMENT, });
 				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
-					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					if (entry.getValue().equals(NOT_NULL)) {
+						statementBuilder.addWhereNotField(entry.getKey(), "");
+					} else {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					}
 				}
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 				Log.verbose("Executing SQL statement: " + statement.toString());

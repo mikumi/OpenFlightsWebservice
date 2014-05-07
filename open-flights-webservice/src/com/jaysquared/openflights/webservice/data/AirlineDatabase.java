@@ -31,6 +31,8 @@ public class AirlineDatabase {
 	final public static String FIELD_CALLSIGN = "callsign";
 	final public static String FIELD_COUNTRY = "country";
 	final public static String FIELD_ACTIVE = "active";
+	
+	private static final String NOT_NULL = "!null";
 
 	final private Map<String, ArrayList<Airline>> airlineCache;
 	final private Map<Integer, Airline> airlineIdCache;
@@ -73,12 +75,12 @@ public class AirlineDatabase {
 				statementBuilder.addSelectField(FIELD_AIRLINE_ID);
 				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
-					if (entry.getKey().equals(FIELD_ACTIVE)) {
-						continue;
+					if (entry.getValue().equals(NOT_NULL)) {
+						statementBuilder.addWhereNotField(entry.getKey(), "");
+					} else {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
-					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 				}
-				statementBuilder.addWhereField(FIELD_ACTIVE, "Y");
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 				Log.verbose("Executing SQL statement: " + statement.toString());
 
@@ -133,12 +135,12 @@ public class AirlineDatabase {
 				statementBuilder.addSelectField(FIELD_IATA);
 				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
-					if (entry.getKey().equals(FIELD_ACTIVE)) {
-						continue;
+					if (entry.getValue().equals(NOT_NULL)) {
+						statementBuilder.addWhereNotField(entry.getKey(), "");
+					} else {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
-					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 				}
-				statementBuilder.addWhereField(FIELD_ACTIVE, "Y");
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 				Log.verbose("Executing SQL statement: " + statement.toString());
 
@@ -215,12 +217,12 @@ public class AirlineDatabase {
 							FIELD_IATA, FIELD_ICAO, FIELD_CALLSIGN, FIELD_COUNTRY, FIELD_ACTIVE });
 					Log.verbose(statementBuilder.getStatement());
 					for (final Map.Entry<String, String> entry : fields.entrySet()) {
-						if (entry.getKey().equals(FIELD_ACTIVE)) {
-							continue;
+						if (entry.getValue().equals(NOT_NULL)) {
+							statementBuilder.addWhereNotField(entry.getKey(), "");
+						} else {
+							statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 						}
-						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
-					statementBuilder.addWhereField(FIELD_ACTIVE, "Y");
 					final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 					Log.verbose("Executing SQL statement: " + statement.toString());
 

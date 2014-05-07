@@ -34,6 +34,8 @@ public class AirportDatabase {
 	final public static String FIELD_ALTITUDE = "altitude";
 	final public static String FIELD_TIMEZONE = "timezone";
 	final public static String FIELD_DST = "dst";
+	
+	private static final String NOT_NULL = "!null";
 
 	final private Map<String, ArrayList<Airport>> airportCache;
 	final private Map<Integer, Airport> airportIdCache;
@@ -76,7 +78,11 @@ public class AirportDatabase {
 				statementBuilder.addSelectField(FIELD_AIRPORT_ID);
 				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
-					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					if (entry.getValue().equals(NOT_NULL)) {
+						statementBuilder.addWhereNotField(entry.getKey(), "");
+					} else {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					}
 				}
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 				Log.verbose("Executing SQL statement: " + statement.toString());
@@ -132,7 +138,11 @@ public class AirportDatabase {
 				statementBuilder.addSelectField(FIELD_IATA_FAA);
 				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
-					statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					if (entry.getValue().equals(NOT_NULL)) {
+						statementBuilder.addWhereNotField(entry.getKey(), "");
+					} else {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					}
 				}
 				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 				Log.verbose("Executing SQL statement: " + statement.toString());
@@ -211,7 +221,11 @@ public class AirportDatabase {
 							FIELD_TIMEZONE, FIELD_DST });
 					Log.verbose(statementBuilder.getStatement());
 					for (final Map.Entry<String, String> entry : fields.entrySet()) {
-						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+						if (entry.getValue().equals(NOT_NULL)) {
+							statementBuilder.addWhereNotField(entry.getKey(), "");
+						} else {
+							statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+						}
 					}
 					final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
 					Log.verbose("Executing SQL statement: " + statement.toString());
