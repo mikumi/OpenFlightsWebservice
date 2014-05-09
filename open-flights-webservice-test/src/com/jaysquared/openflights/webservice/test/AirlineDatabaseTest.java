@@ -54,6 +54,7 @@ public class AirlineDatabaseTest {
 		AirlineDatabase airlineDatabase = new AirlineDatabase(connectionManager);
 		int[] airlineIds = airlineDatabase.airlineIdsByField(AirlineDatabase.FIELD_IATA, "LH");
 		Log.verbose("Ids found: " + airlineIds.length);
+		assertTrue("No airlineIds returned", (airlineIds.length >= 1));
 		for (int airlineId : airlineIds) {
 			assertTrue("Airline ID not valid", (airlineId == 3320 ) || (airlineId == 3321));
 			Log.debug("Airline id: " + airlineId);
@@ -69,6 +70,7 @@ public class AirlineDatabaseTest {
 		AirlineDatabase airlineDatabase = new AirlineDatabase(connectionManager);
 		Airline[] airlines = airlineDatabase.airlinesByField(AirlineDatabase.FIELD_IATA, "LH");
 		Log.verbose("Airlines found: " + airlines.length);
+		assertTrue("No airlines returned", (airlines.length >= 1));
 		for (Airline airline : airlines) {
 			assertTrue("IATA code didn't match.", airline.getIata().equals("LH"));
 			Log.debug("Airline: " + airline.toString());
