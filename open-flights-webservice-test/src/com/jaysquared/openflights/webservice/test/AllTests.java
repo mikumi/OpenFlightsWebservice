@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AirlineDatabaseTest.class, MySqlSelectStatementBuilderTest.class })
+@SuiteClasses({ AirlineDatabaseTest.class })
 public class AllTests {
 
 }

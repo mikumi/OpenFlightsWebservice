@@ -3,7 +3,7 @@
  */
 package com.jaysquared.openflights.webservice.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import com.jaysquared.openflights.webservice.data.Airline;
 import com.jaysquared.openflights.webservice.data.AirlineDatabase;
-import com.jaysquared.openflights.webservice.dbconnection.MySqlConnectionManager;
 import com.michael_kuck.commons.Log;
+import com.michael_kuck.commons.mysql.MySqlConnectionManager;
 
 /**
  * @author michaelkuck
