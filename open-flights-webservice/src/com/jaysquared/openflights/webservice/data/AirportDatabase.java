@@ -317,7 +317,7 @@ public class AirportDatabase {
 				Log.debug("Airport cache now containing " + this.airportCache.size() + " keywords.");
 			}
 			if (!airports.contains(airport)) {
-				Log.debug("Added " + airport.getName() + " added to keyword " + key + ", which now contains"
+				Log.debug("Added " + airport.getName() + " added to keyword " + key + ", which now contains "
 						+ airports.size() + " airlines.");
 				airports.add(airport);
 			}

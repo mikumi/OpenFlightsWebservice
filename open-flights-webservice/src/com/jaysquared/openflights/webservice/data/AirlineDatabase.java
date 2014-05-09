@@ -301,7 +301,7 @@ public class AirlineDatabase {
 				Log.debug("Airline cache now containing " + this.airlineCache.size() + " keywords.");
 			}
 			if (!airlines.contains(airline)) {
-				Log.debug("Added " + airline.getName() + " added to keyword " + key + ", which now contains"
+				Log.debug("Added " + airline.getName() + " added to keyword " + key + ", which now contains "
 						+ airlines.size() + " airlines.");
 				airlines.add(airline);
 			}
