@@ -122,5 +122,54 @@ public class RouteDatabase {
 		this.connectionManager.returnToPool(connection);
 		return routes.toArray(new Route[routes.size()]);
 	}
+	
+	/**
+	 * @param fields
+	 * @return
+	 */
+	public ArrayList<Map<String,String>> routeIndexByFields(final Map<String, String> fields)
+	{
+		Log.verbose("routeIndexByField: " + fields.toString());
+
+		final ArrayList<Map<String,String>> routesList = new ArrayList<Map<String,String>>();
+		final Connection connection = this.connectionManager.connectionFromPool();
+		if (connection == null) {
+			Log.error("Could not search for airports, no database connection.");
+		} else {
+			try {
+				// Prepare statement
+				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_ROUTES);
+				statementBuilder.addSelectFields(new String[] { FIELD_AIRLINE, FIELD_SOURCE_AIRPORT,
+						FIELD_DESTINATION_AIRPORT });
+				for (final Map.Entry<String, String> entry : fields.entrySet()) {
+					if (entry.getValue().equals(NOT_NULL)) {
+						statementBuilder.addWhereNotField(entry.getKey(), "");
+					} else {
+						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
+					}
+				}
+				final PreparedStatement statement = statementBuilder.getPreparedStatement(connection);
+				Log.verbose("Executing SQL statement: " + statement.toString());
+
+				// Execute statement and parse results
+				final ResultSet resultSet = statement.executeQuery();
+				while (resultSet.next()) {
+					final String resultAirline = resultSet.getString(FIELD_AIRLINE);
+					final String resultSourceAirport = resultSet.getString(FIELD_SOURCE_AIRPORT);
+					final String resultDestinationAirport = resultSet.getString(FIELD_DESTINATION_AIRPORT);
+					Map<String,String> route = new HashMap<String,String>();
+					route.put(FIELD_AIRLINE, resultAirline);
+					route.put(FIELD_SOURCE_AIRPORT, resultSourceAirport);
+					route.put(FIELD_DESTINATION_AIRPORT, resultDestinationAirport);
+					routesList.add(route);
+				}
+			} catch (final SQLException e) {
+				Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
+			}
+		}
+
+		this.connectionManager.returnToPool(connection);
+		return routesList;
+	}
 
 }

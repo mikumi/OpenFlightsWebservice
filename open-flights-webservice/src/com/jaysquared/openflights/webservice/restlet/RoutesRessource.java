@@ -3,6 +3,7 @@
  */
 package com.jaysquared.openflights.webservice.restlet;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.restlet.resource.Get;
@@ -22,6 +23,8 @@ public class RoutesRessource extends ServerResource {
 	public static final String URL_ROOT = "/routes";
 	public static final String SUB_RESOURCE_PLACEHOLDER = "sub";
 	public static final String[] URLS = { URL_ROOT, urlForRessource(SUB_RESOURCE_PLACEHOLDER) };
+	
+	public static final String RESOURCE_INDEX = "index";
 
 	/**
 	 * @return
@@ -33,6 +36,8 @@ public class RoutesRessource extends ServerResource {
 		final String ressourceSub = (String) this.getRequest().getAttributes().get(SUB_RESOURCE_PLACEHOLDER);
 		if (ressourceSub == null) {
 			result = this.getRoutes();
+		} else if (ressourceSub.equals(RESOURCE_INDEX)) {
+			result = this.getRoutesIndex();
 		} else {
 			result = "Ressource not found";
 		}
@@ -47,6 +52,21 @@ public class RoutesRessource extends ServerResource {
 		final Map<String, String> parameters = this.getQuery().getValuesMap();
 		final RouteDatabase routeDatabase = ApplicationContext.getInstance().getFlightInformation().getRouteDatabase();
 		final Route[] routes = routeDatabase.routesByFields(parameters);
+
+		final Gson gson = new Gson();
+		final String jsonString = gson.toJson(routes);
+
+		return jsonString;
+	}
+	
+	/**
+	 * @return
+	 */
+	private String getRoutesIndex()
+	{
+		final Map<String, String> parameters = this.getQuery().getValuesMap();
+		final RouteDatabase routeDatabase = ApplicationContext.getInstance().getFlightInformation().getRouteDatabase();
+		final ArrayList<Map<String,String>> routes = routeDatabase.routeIndexByFields(parameters);
 
 		final Gson gson = new Gson();
 		final String jsonString = gson.toJson(routes);
