@@ -73,7 +73,6 @@ public class AirlineDatabase {
 				// Prepare statement
 				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRLINES);
 				statementBuilder.addSelectField(FIELD_AIRLINE_ID);
-				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
 					if (entry.getValue().equals(NOT_NULL)) {
 						statementBuilder.addWhereNotField(entry.getKey(), "");
@@ -81,7 +80,7 @@ public class AirlineDatabase {
 						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
 				}
-				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				final PreparedStatement statement = statementBuilder.getPreparedStatement(connection);
 				Log.verbose("Executing SQL statement: " + statement.toString());
 
 				// Execute statement and parse results
@@ -133,7 +132,6 @@ public class AirlineDatabase {
 				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRLINES);
 				statementBuilder.addSelectField(FIELD_NAME);
 				statementBuilder.addSelectField(FIELD_IATA);
-				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
 					if (entry.getValue().equals(NOT_NULL)) {
 						statementBuilder.addWhereNotField(entry.getKey(), "");
@@ -141,7 +139,7 @@ public class AirlineDatabase {
 						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
 				}
-				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				final PreparedStatement statement = statementBuilder.getPreparedStatement(connection);
 				Log.verbose("Executing SQL statement: " + statement.toString());
 
 				// Execute statement and parse results
@@ -215,7 +213,6 @@ public class AirlineDatabase {
 					final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_AIRLINES);
 					statementBuilder.addSelectFields(new String[] { FIELD_AIRLINE_ID, FIELD_NAME, FIELD_ALIAS,
 							FIELD_IATA, FIELD_ICAO, FIELD_CALLSIGN, FIELD_COUNTRY, FIELD_ACTIVE });
-					Log.verbose(statementBuilder.getStatement());
 					for (final Map.Entry<String, String> entry : fields.entrySet()) {
 						if (entry.getValue().equals(NOT_NULL)) {
 							statementBuilder.addWhereNotField(entry.getKey(), "");
@@ -223,7 +220,8 @@ public class AirlineDatabase {
 							statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 						}
 					}
-					final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+					statementBuilder.setRowLimit(100);
+					final PreparedStatement statement = statementBuilder.getPreparedStatement(connection);
 					Log.verbose("Executing SQL statement: " + statement.toString());
 
 					// Execute statement and parse results

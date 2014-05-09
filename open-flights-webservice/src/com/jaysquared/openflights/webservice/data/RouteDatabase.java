@@ -75,7 +75,6 @@ public class RouteDatabase {
 				final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_ROUTES);
 				statementBuilder.addSelectFields(new String[] { FIELD_AIRLINE_ID, FIELD_SOURCE_AIRPORT_ID,
 						FIELD_DESTINATION_AIRPORT_ID, FIELD_CODESHARE, FIELD_STOPS, FIELD_EQUIPMENT, });
-				Log.verbose(statementBuilder.getStatement());
 				for (final Map.Entry<String, String> entry : fields.entrySet()) {
 					if (entry.getValue().equals(NOT_NULL)) {
 						statementBuilder.addWhereNotField(entry.getKey(), "");
@@ -83,7 +82,8 @@ public class RouteDatabase {
 						statementBuilder.addWhereField(entry.getKey(), entry.getValue());
 					}
 				}
-				final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+				statementBuilder.setRowLimit(10);
+				final PreparedStatement statement = statementBuilder.getPreparedStatement(connection);
 				Log.verbose("Executing SQL statement: " + statement.toString());
 
 				// Execute statement and parse results

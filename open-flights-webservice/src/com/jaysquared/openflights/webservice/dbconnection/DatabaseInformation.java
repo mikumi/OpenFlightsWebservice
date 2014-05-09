@@ -46,7 +46,7 @@ public class DatabaseInformation {
 					// Prepare statement
 					final MySqlSelectStatementBuilder statementBuilder = new MySqlSelectStatementBuilder(TABLE_INFO);
 					statementBuilder.addSelectField(FIELD_DATABASE_VERSION);
-					final PreparedStatement statement = connection.prepareStatement(statementBuilder.getStatement());
+					final PreparedStatement statement = statementBuilder.getPreparedStatement(connection);
 					Log.verbose("Executing SQL statement: " + statement.toString());
 
 					// Execute statement and parse results

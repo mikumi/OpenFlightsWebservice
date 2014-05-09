@@ -12,7 +12,7 @@ public class Version {
 
 	final public static int MAJOR = 0;
 	final public static int MINOR = 4;
-	final public static int PATCH = 5;
+	final public static int PATCH = 6;
 
 	/**
 	 * Returns the full version information as a string. Version numbers separated by ".".
