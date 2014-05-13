@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/gson-2.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/org.restlet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/commons-cli-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/org.restlet.ext.simple.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/org.simpleframework.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/mysql-connector-java-5.1.30-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/commons-lang3-3.3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

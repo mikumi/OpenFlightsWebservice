@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mkcommons-java/mkcommons-java.iml" filepath="$PROJECT_DIR$/mkcommons-java/mkcommons-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/open-flights-webservice/open-flights-webservice.iml" filepath="$PROJECT_DIR$/open-flights-webservice/open-flights-webservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/open-flights-webservice-test/open-flights-webservice-test.iml" filepath="$PROJECT_DIR$/open-flights-webservice-test/open-flights-webservice-test.iml" />
+    </modules>
+  </component>
+</project>
+

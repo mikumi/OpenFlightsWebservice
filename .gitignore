@@ -1,4 +1,8 @@
 bin/
+out/
 .DS_Store
 
 open-flights-webservice.jar
+*.class
+workspace.xml
+tasks.xml
