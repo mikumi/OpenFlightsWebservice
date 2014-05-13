@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact name="open-flights-webservice:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/open_flights_webservice_jar</output-path>
+    <root id="root">
+      <element id="archive" name="open-flights-webservice.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/open-flights-webservice/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="open-flights-webservice" />
+        <element id="module-output" name="mkcommons-java" />
+      </element>
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="lib" />
+      </element>
+    </root>
+  </artifact>
+</component>
