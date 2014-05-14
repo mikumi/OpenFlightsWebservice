@@ -1,6 +1,6 @@
 package com.jaysquared.openflights.webservice.data;
 
-import com.michael_kuck.commons.mysql.MySqlConnectionManager;
+import com.jolbox.bonecp.BoneCP;
 
 public class FlightInformation {
 
@@ -8,11 +8,11 @@ public class FlightInformation {
 	private final AirportDatabase airportDatabase;
 	private final RouteDatabase routeDatabase;
 
-	public FlightInformation(final MySqlConnectionManager connectionManager)
+	public FlightInformation(final BoneCP connectionPool)
 	{
-		this.airlineDatabase = new AirlineDatabase(connectionManager);
-		this.airportDatabase = new AirportDatabase(connectionManager);
-		this.routeDatabase = new RouteDatabase(connectionManager);
+		this.airlineDatabase = new AirlineDatabase(connectionPool);
+		this.airportDatabase = new AirportDatabase(connectionPool);
+		this.routeDatabase = new RouteDatabase(connectionPool);
 	}
 
 	/**

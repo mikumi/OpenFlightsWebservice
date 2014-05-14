@@ -1,5 +1,8 @@
 package com.jaysquared.openflights.webservice;
 
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
+import com.michael_kuck.commons.mysql.MySqlHelper;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 
@@ -7,7 +10,6 @@ import com.jaysquared.openflights.webservice.data.FlightInformation;
 import com.jaysquared.openflights.webservice.dbconnection.DatabaseInformation;
 import com.jaysquared.openflights.webservice.restlet.OpenFlightsRestletApplication;
 import com.michael_kuck.commons.Log;
-import com.michael_kuck.commons.mysql.MySqlConnectionManager;
 
 /**
  * 
@@ -18,6 +20,8 @@ import com.michael_kuck.commons.mysql.MySqlConnectionManager;
  * 
  */
 public class OpenFlightsWebservice {
+
+    static BoneCP connectionPool = null;
 
 	/**
 	 * @param args
@@ -36,10 +40,19 @@ public class OpenFlightsWebservice {
 		Log.info("**********************************************************************");
 		Log.info("");
 
-		final MySqlConnectionManager connectionManager = new MySqlConnectionManager(settings.getSqlHost(),
-				settings.getSqlPort(), settings.getSqlUser(), settings.getSqlPassword(), settings.getSqlDatabase());
-		final FlightInformation flightInformation = new FlightInformation(connectionManager);
-		final DatabaseInformation databaseInformation = new DatabaseInformation(connectionManager);
+        // Set up MySQL connection pool
+        BoneCPConfig config = new BoneCPConfig();
+        final String url = MySqlHelper.getUrl(settings.getSqlHost(), settings.getSqlPort(), settings.getSqlDatabase());
+        config.setJdbcUrl(url);
+        config.setUsername(settings.getSqlUser());
+        config.setPassword(settings.getSqlPassword());
+        config.setMinConnectionsPerPartition(5);
+        config.setMaxConnectionsPerPartition(10);
+        config.setPartitionCount(1);
+        connectionPool = new BoneCP(config);
+
+		final FlightInformation flightInformation = new FlightInformation(connectionPool);
+		final DatabaseInformation databaseInformation = new DatabaseInformation(connectionPool);
 		ApplicationContext.getInstance().init(flightInformation, databaseInformation);
 
 		// Add a new HTTP server listening on port xxx and attach the boarding pass web service
@@ -47,6 +60,13 @@ public class OpenFlightsWebservice {
 		component.getServers().add(Protocol.HTTP, settings.getWebservicePortHTTP());
 		component.getDefaultHost().attach("/rest", new OpenFlightsRestletApplication());
 		component.start();
+
 	}
 
+    @Override
+    protected void finalize() throws Throwable {
+        // Shutdown server
+        Log.info("Server is shutting down...");
+        connectionPool.shutdown();
+    }
 }

@@ -8,8 +8,20 @@
       <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/org.simpleframework.jar!/" />
       <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/mysql-connector-java-5.1.30-bin.jar!/" />
       <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/commons-lang3-3.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/bonecp-0.8.0.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/guava-17.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/slf4j-api-1.7.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/open-flights-webservice/lib/slf4j-simple-1.7.7.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs" />
+      <root url="http://jolbox.com/bonecp/downloads/site/apidocs" />
+      <root url="http://commons.apache.org/proper/commons-lang/apidocs" />
+      <root url="http://commons.apache.org/proper/commons-cli/apidocs" />
+      <root url="http://restlet.org/learn/javadocs/2.2/jse/api/" />
+      <root url="http://restlet.org/learn/javadocs/2.2/jse/ext/" />
+      <root url="http://simple.sourceforge.net/download/stream/doc/javadoc/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>
