@@ -1,3 +1,3 @@
 [submodule "mkcommons-java"]
 	path = mkcommons-java
-	url = https://miku84@bitbucket.org/miku84/mkcommons-java.git
+url=https://github.com/mikumi/mkcommons-java.git
