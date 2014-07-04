@@ -105,7 +105,7 @@ public class AirportDatabase {
      * @param value
      * @return
      */
-    public Map<String, ArrayList<String>> airportListByField(final String field, final String value) {
+    public Map<String, ArrayList<String>> airportIndexByField(final String field, final String value) {
         final HashMap<String, String> fields = new HashMap<String, String>();
         fields.put(field, value);
         return this.airportIndexByFields(fields);
@@ -116,7 +116,7 @@ public class AirportDatabase {
      * @return
      */
     public Map<String, ArrayList<String>> airportIndexByFields(final Map<String, String> fields) {
-        Log.verbose("airportListByField: " + fields.toString());
+        Log.verbose("airportIndexByField: " + fields.toString());
 
         final HashMap<String, ArrayList<String>> airportList = new HashMap<String, ArrayList<String>>();
         Connection connection = null;
