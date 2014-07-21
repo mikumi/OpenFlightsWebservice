@@ -37,8 +37,8 @@ public class AirportDatabase {
 
     private static final String NOT_NULL = "!null";
 
-    final private Map<String, ArrayList<Airport>> airportCache;
-    final private Map<Integer, Airport>           airportIdCache;
+    //    final private Map<String, ArrayList<Airport>> airportCache;
+    final private Map<Integer, Airport> airportIdCache;
 
     final private BoneCP connectionPool;
 
@@ -47,7 +47,7 @@ public class AirportDatabase {
      */
     public AirportDatabase(final BoneCP connectionPool) {
         this.connectionPool = connectionPool;
-        this.airportCache = new HashMap<String, ArrayList<Airport>>();
+//        this.airportCache = new HashMap<String, ArrayList<Airport>>();
         this.airportIdCache = new HashMap<Integer, Airport>();
     }
 
@@ -283,32 +283,33 @@ public class AirportDatabase {
 //	}
 
     /**
-     * @param airline
+     * @param airport
      */
     private synchronized void addAirportToCache(final Airport airport) {
         // Cache id
         final Integer id = airport.getAirportId();
         this.airportIdCache.put(id, airport);
+        Log.debug("Airport ID Cache size: " + this.airportIdCache.size());
         // Cache major keys
-        final ArrayList<String> keys = new ArrayList<String>();
-        keys.add(airport.getCity());
-        keys.add(airport.getCountry());
-        keys.add(airport.getIata_faa());
-        keys.add(airport.getIcao());
-        keys.add(airport.getName());
-        for (final String key : keys) {
-            ArrayList<Airport> airports = this.airportCache.get(key);
-            if (airports == null) {
-                airports = new ArrayList<Airport>();
-                this.airportCache.put(key, airports);
-                Log.debug("Airport cache now containing " + this.airportCache.size() + " keywords.");
-            }
-            if (!airports.contains(airport)) {
-                Log.debug("Added " + airport.getName() + " added to keyword " + key + ", which now contains " +
-                          airports.size() + " airlines.");
-                airports.add(airport);
-            }
-        }
+//        final ArrayList<String> keys = new ArrayList<String>();
+//        keys.add(airport.getCity());
+//        keys.add(airport.getCountry());
+//        keys.add(airport.getIata_faa());
+//        keys.add(airport.getIcao());
+//        keys.add(airport.getName());
+//        for (final String key : keys) {
+//            ArrayList<Airport> airports = this.airportCache.get(key);
+//            if (airports == null) {
+//                airports = new ArrayList<Airport>();
+//                this.airportCache.put(key, airports);
+//                Log.debug("Airport cache now containing " + this.airportCache.size() + " keywords.");
+//            }
+//            if (!airports.contains(airport)) {
+//                Log.debug("Added " + airport.getName() + " added to keyword " + key + ", which now contains " +
+//                          airports.size() + " airlines.");
+//                airports.add(airport);
+//            }
+//        }
     }
 
 }

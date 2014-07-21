@@ -34,8 +34,8 @@ public class AirlineDatabase {
 
     private static final String NOT_NULL = "!null";
 
-    final private Map<String, ArrayList<Airline>> airlineCache;
-    final private Map<Integer, Airline>           airlineIdCache;
+    //    final private Map<String, ArrayList<Airline>> airlineCache;
+    final private Map<Integer, Airline> airlineIdCache;
 
     final private BoneCP connectionPool;
 
@@ -44,7 +44,7 @@ public class AirlineDatabase {
      */
     public AirlineDatabase(final BoneCP connectionPool) {
         this.connectionPool = connectionPool;
-        this.airlineCache = new HashMap<String, ArrayList<Airline>>();
+//        this.airlineCache = new HashMap<String, ArrayList<Airline>>();
         this.airlineIdCache = new HashMap<Integer, Airline>();
     }
 
@@ -274,25 +274,26 @@ public class AirlineDatabase {
         // Cache id
         final Integer id = airline.getAirlineId();
         this.airlineIdCache.put(id, airline);
+        Log.debug("Airline ID Cache size: " + this.airlineIdCache.size());
         // Cache major keys
-        final ArrayList<String> keys = new ArrayList<String>();
-        keys.add(airline.getName());
-        keys.add(airline.getIata());
-        keys.add(airline.getIcao());
-        keys.add(airline.getCountry());
-        for (final String key : keys) {
-            ArrayList<Airline> airlines = this.airlineCache.get(key);
-            if (airlines == null) {
-                airlines = new ArrayList<Airline>();
-                this.airlineCache.put(key, airlines);
-                Log.debug("Airline cache now containing " + this.airlineCache.size() + " keywords.");
-            }
-            if (!airlines.contains(airline)) {
-                Log.debug("Added " + airline.getName() + " added to keyword " + key + ", which now contains " +
-                          airlines.size() + " airlines.");
-                airlines.add(airline);
-            }
-        }
+//        final ArrayList<String> keys = new ArrayList<String>();
+//        keys.add(airline.getName());
+//        keys.add(airline.getIata());
+//        keys.add(airline.getIcao());
+//        keys.add(airline.getCountry());
+//        for (final String key : keys) {
+//            ArrayList<Airline> airlines = this.airlineCache.get(key);
+//            if (airlines == null) {
+//                airlines = new ArrayList<Airline>();
+//                this.airlineCache.put(key, airlines);
+//                Log.debug("Airline cache now containing " + this.airlineCache.size() + " keywords.");
+//            }
+//            if (!airlines.contains(airline)) {
+//                Log.debug("Added " + airline.getName() + " added to keyword " + key + ", which now contains " +
+//                          airlines.size() + " airlines.");
+//                airlines.add(airline);
+//            }
+//        }
     }
 
 }
