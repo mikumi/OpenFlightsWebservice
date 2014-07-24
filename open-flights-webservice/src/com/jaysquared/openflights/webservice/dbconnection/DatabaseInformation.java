@@ -35,7 +35,7 @@ public class DatabaseInformation {
      * @return
      */
     public int databaseVersion() {
-        if (this.databaseVersion < 0) {
+//        if (this.databaseVersion < 0) {
             Connection connection = null;
             try {
                 connection = this.connectionPool.getConnection();
@@ -57,7 +57,7 @@ public class DatabaseInformation {
             } finally {
                 MySqlHelper.closeConnection(connection);
             }
-        }
+//        }
 
         return this.databaseVersion;
     }
