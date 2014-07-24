@@ -51,6 +51,7 @@ public class DatabaseInformation {
                 while (resultSet.next()) {
                     this.databaseVersion = resultSet.getInt(FIELD_DATABASE_VERSION);
                 }
+                statement.close();
             } catch (final SQLException e) {
                 e.printStackTrace();
             } finally {

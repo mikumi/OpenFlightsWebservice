@@ -87,6 +87,7 @@ public class AirportDatabase {
                 final int resultAirportId = resultSet.getInt(FIELD_AIRPORT_ID);
                 airportIds.add(resultAirportId);
             }
+            statement.close();
         } catch (final SQLException e) {
             e.printStackTrace();
         } finally {
@@ -148,6 +149,7 @@ public class AirportDatabase {
                 }
                 airports.add(resultAirportName);
             }
+            statement.close();
         } catch (final SQLException e) {
             e.printStackTrace();
         } finally {
@@ -238,6 +240,7 @@ public class AirportDatabase {
                     airportsMatched.add(airport);
                     this.addAirportToCache(airport);
                 }
+                statement.close();
             } catch (final SQLException e) {
                 Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
             } finally {
