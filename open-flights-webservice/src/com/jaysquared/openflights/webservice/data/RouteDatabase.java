@@ -112,6 +112,7 @@ public class RouteDatabase {
                     Log.error("Couldn't parse route information");
                 }
             }
+            statement.close();
         } catch (final SQLException e) {
             Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
         } finally {
@@ -158,6 +159,7 @@ public class RouteDatabase {
                 route.put(FIELD_DESTINATION_AIRPORT, resultDestinationAirport);
                 routesList.add(route);
             }
+            statement.close();
         } catch (final SQLException e) {
             Log.error("Error executing SQL Statement: " + e.getLocalizedMessage());
         } finally {

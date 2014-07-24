@@ -22,6 +22,7 @@ public class DatabaseInformation {
     final public static String FIELD_DATABASE_VERSION = "database_version";
 
     private int databaseVersion = -1;
+    private long lastDatabaseVersionCheck = 0;
     private final BoneCP connectionPool;
 
     /**
@@ -35,7 +36,8 @@ public class DatabaseInformation {
      * @return
      */
     public int databaseVersion() {
-        if (this.databaseVersion < 0) {
+        final long timeSinceLastCheck = System.currentTimeMillis() - lastDatabaseVersionCheck;
+        if ((this.databaseVersion < 0) || (timeSinceLastCheck > 1000 * 60)) {
             Connection connection = null;
             try {
                 connection = this.connectionPool.getConnection();
@@ -51,6 +53,8 @@ public class DatabaseInformation {
                 while (resultSet.next()) {
                     this.databaseVersion = resultSet.getInt(FIELD_DATABASE_VERSION);
                 }
+                this.lastDatabaseVersionCheck = System.currentTimeMillis();
+                statement.close();
             } catch (final SQLException e) {
                 e.printStackTrace();
             } finally {
